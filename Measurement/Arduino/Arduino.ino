@@ -3,9 +3,12 @@
 #include "analogComp.h"
 
 int ledPin = 5;
-long startMillis = 0;
-long endMillis = 0;
+long startMicros = 0;
+long endMicros = 0;
 char detected = 0;
+
+#define MICROSPERSECOND 1000000
+long timeOut = MICROSPERSECOND * 2;
 
 void setup() {
   // setup comparator
@@ -21,25 +24,36 @@ void setup() {
 
 void loop() {
   digitalWrite(ledPin, HIGH);
-  startMillis = micros();
+  startMicros = micros();
   delay(100);
   digitalWrite(ledPin, LOW);
-  delay(1000);
+
+  //wait for detection
+  while(!detected) {
+    long time = micros() - startMicros;
+    if(time > timeOut) break;
+    delay(1000);
+  }
 
   if(detected) {
-    long latency = endMillis - startMillis;
-
+    long latency = endMicros - startMicros;
+  
     //print delay on console
     Serial.print("Detected: ");
     Serial.println(latency);
-
+  
     //reset flag
     detected = 0;
   }
+  else {
+    Serial.println("Error measurement timed out. Check placement");
+  }
+
+  delay(1000); // wait 1s before next measurement
 }
 
 void pulseDetected() {
-  endMillis = micros();
+  endMicros = micros();
   detected = 1;
 }
 
