@@ -21,7 +21,7 @@ void setup() {
 
 void loop() {
   digitalWrite(ledPin, HIGH);
-  startMillis = millis();
+  startMillis = micros();
   delay(100);
   digitalWrite(ledPin, LOW);
   delay(1000);
@@ -39,7 +39,7 @@ void loop() {
 }
 
 void pulseDetected() {
-  endMillis = millis();
+  endMillis = micros();
   detected = 1;
 }
 
