@@ -3,26 +3,44 @@
 #include "analogComp.h"
 
 int ledPin = 5;
+long startMillis = 0;
+long endMillis = 0;
+char detected = 0;
 
 void setup() {
   // setup comparator
-  analogComparator.setOn(AIN0, AIN1); 
+  analogComparator.setOn(AIN0, AIN1); // sensor: D6, reference: D7 on Arduino Uno
   analogComparator.enableInterrupt(pulseDetected, RISING); // interrupt on rising edge
 
   pinMode(ledPin,OUTPUT);
+
+  // init serial port
   Serial.begin(9600);
-  Serial.print("Latency measurement tool");
+  Serial.println("* Latency measurement tool *");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  digitalWrite(ledPin, HIGH);
+  startMillis = millis();
+  delay(100);
   digitalWrite(ledPin, LOW);
   delay(1000);
-  digitalWrite(ledPin, HIGH);
-  delay(1000);
+
+  if(detected) {
+    long latency = endMillis - startMillis;
+
+    //print delay on console
+    Serial.print("Detected: ");
+    Serial.println(latency);
+
+    //reset flag
+    detected = 0;
+  }
 }
 
 void pulseDetected() {
-  Serial.println("Detected");
+  endMillis = millis();
+  detected = 1;
 }
+
 
