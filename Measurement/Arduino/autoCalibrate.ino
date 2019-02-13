@@ -9,17 +9,17 @@ void calibrate() {
   int success = 1;
   int value = 0;
   
-  while(success && (i < CALIBRATESTEPS))  {
+  while(success && (i <= CALIBRATESTEPS))  {
     
-    value = i * 256/CALIBRATESTEPS;
+    value = i * 255/CALIBRATESTEPS;
     Serial.print("Trying value: ");
     Serial.println(value);
     
     analogWrite(refPin, value);
-    delay(1000); // wait for output to stabilize
+    delay(2000); // wait for output to stabilize
     
     // check comparator
-    success = analogComparator.waitComp(10);
+    success = analogComparator.waitComp(100);
     Serial.println(success);
 
     ++i;

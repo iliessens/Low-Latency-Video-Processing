@@ -17,7 +17,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("* Latency measurement tool *");
   
-   pinMode(9, OUTPUT);   // sets the pin as output
+   pinMode(refPin, OUTPUT);   // sets the pin as output
    pinMode(ledPin,OUTPUT);
   
   // setup comparator
