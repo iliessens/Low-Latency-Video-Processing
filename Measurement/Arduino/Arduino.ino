@@ -58,7 +58,7 @@ void measure() {
     detected = 0;
   }
   else {
-    Serial.println("Error measurement timed out. Check placement");
+    Serial.println("Timed out. Check placement");
   }
 }
 
