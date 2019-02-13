@@ -10,7 +10,7 @@ long endMicros = 0;
 char detected = 0;
 
 #define MICROSPERSECOND 1000000
-long timeOut = MICROSPERSECOND * 2;
+long timeOut = MICROSPERSECOND * 5;
 
 void setup() {
   // init serial port
