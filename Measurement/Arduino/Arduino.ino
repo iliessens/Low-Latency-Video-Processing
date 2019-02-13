@@ -16,59 +16,85 @@ void setup() {
   // init serial port
   Serial.begin(9600);
   Serial.println("* Latency measurement tool *");
-  
-   pinMode(refPin, OUTPUT);   // sets the pin as output
-   pinMode(ledPin,OUTPUT);
-  
+
+  pinMode(refPin, OUTPUT);   // sets the pin as output
+  analogWrite(refPin, 128);
+  pinMode(ledPin, OUTPUT);
+
   // setup comparator
   analogComparator.setOn(AIN0, AIN1); // sensor: D6, reference: D7 on Arduino Uno
-  
+
   analogComparator.enableInterrupt(pulseDetected, RISING); // interrupt on rising edge
 }
 
 void loop() {
-  if(Serial.available()) {
-      int value = Serial.parseInt();
-      if(value> 0) {
-        analogWrite(refPin, value);
-        Serial.print("New reference set to: ");
-        Serial.println(value);
-        delay(1000);
-      }
+  if (Serial.available() > 0) {
+    processUI();
   }
-  
+}
+
+void measure() {
+  Serial.println("Starting measurement...");
   digitalWrite(ledPin, HIGH);
   startMicros = micros();
   delay(100);
   digitalWrite(ledPin, LOW);
 
   //wait for detection
-  while(!detected) {
+  while (!detected) {
     long time = micros() - startMicros;
-    if(time > timeOut) break;
+    if (time > timeOut) break;
     delay(1000);
   }
 
-  if(detected) {
+  if (detected) {
     long latency = endMicros - startMicros;
-  
+
     //print delay on console
     Serial.print("Detected: ");
     Serial.println(latency);
-  
+
     //reset flag
     detected = 0;
   }
   else {
     Serial.println("Error measurement timed out. Check placement");
   }
-
-  delay(1000); // wait 1s before next measurement
 }
 
 void pulseDetected() {
   endMicros = micros();
   detected = 1;
+}
+
+void processUI() {
+  char inchar = Serial.peek();
+  switch (inchar) {
+    case ('m'): measure();
+      break;
+    case ('\n'): void(); // ignore
+      break;
+
+    default: setRefValue();
+  }
+
+  // Flush buffer
+  while(Serial.available() > 0) {
+    Serial.read();
+  }
+}
+
+void setRefValue() {
+  int value = Serial.parseInt();
+  if (value > 0) {
+    analogWrite(refPin, value);
+    Serial.print("New reference set to: ");
+    Serial.println(value);
+    delay(1000); // wait for RC filter to stabilize
+  }
+  else {
+    Serial.println("Unknown command");
+  }
 }
 
 
