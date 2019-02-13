@@ -22,9 +22,6 @@ void setup() {
   
   // setup comparator
   analogComparator.setOn(AIN0, AIN1); // sensor: D6, reference: D7 on Arduino Uno
-
-  // run auto calibration
-  calibrate();
   
   analogComparator.enableInterrupt(pulseDetected, RISING); // interrupt on rising edge
 }
