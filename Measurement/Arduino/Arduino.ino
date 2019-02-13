@@ -2,12 +2,12 @@
 // Download from http://www.leonardomiliani.com/en/2012/analogcomp-una-libreria-per-gestire-il-comparatore-analogico/ and place in libraries folder
 #include "analogComp.h"
 
-int ledPin = 5;
-int refPin = 9;    // reference output
+const int ledPin = 5;
+const int refPin = 9;    // reference output
 
 long startMicros = 0;
-long endMicros = 0;
-char detected = 0;
+volatile long endMicros = 0;
+volatile char detected = 0;
 
 #define MICROSPERSECOND 1000000
 long timeOut = MICROSPERSECOND * 5;
