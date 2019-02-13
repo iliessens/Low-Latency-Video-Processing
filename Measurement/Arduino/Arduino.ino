@@ -3,6 +3,8 @@
 #include "analogComp.h"
 
 int ledPin = 5;
+int refPin = 9;    // reference output
+
 long startMicros = 0;
 long endMicros = 0;
 char detected = 0;
@@ -11,15 +13,20 @@ char detected = 0;
 long timeOut = MICROSPERSECOND * 2;
 
 void setup() {
-  // setup comparator
-  analogComparator.setOn(AIN0, AIN1); // sensor: D6, reference: D7 on Arduino Uno
-  analogComparator.enableInterrupt(pulseDetected, RISING); // interrupt on rising edge
-
-  pinMode(ledPin,OUTPUT);
-
   // init serial port
   Serial.begin(9600);
   Serial.println("* Latency measurement tool *");
+  
+   pinMode(9, OUTPUT);   // sets the pin as output
+   pinMode(ledPin,OUTPUT);
+  
+  // setup comparator
+  analogComparator.setOn(AIN0, AIN1); // sensor: D6, reference: D7 on Arduino Uno
+
+  // run auto calibration
+  calibrate();
+  
+  analogComparator.enableInterrupt(pulseDetected, RISING); // interrupt on rising edge
 }
 
 void loop() {
