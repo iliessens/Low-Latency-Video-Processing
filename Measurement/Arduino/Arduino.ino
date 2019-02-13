@@ -30,6 +30,16 @@ void setup() {
 }
 
 void loop() {
+  if(Serial.available()) {
+      int value = Serial.parseInt();
+      if(value> 0) {
+        analogWrite(refPin, value);
+        Serial.print("New reference set to: ");
+        Serial.println(value);
+        delay(1000);
+      }
+  }
+  
   digitalWrite(ledPin, HIGH);
   startMicros = micros();
   delay(100);
