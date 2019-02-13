@@ -20,3 +20,10 @@ fprintf('Mean: %0.2f\n',m);
 
 m=std(results);
 fprintf('Standard Deviation: %0.2f\n',m);
+
+%create scatter plot
+x=1:n;
+scatter(x,results);
+xlabel 'Measurement []'
+ylabel 'Latency [ms]'
+title 'Latency Measurements'
