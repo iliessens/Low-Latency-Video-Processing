@@ -1,5 +1,7 @@
 #include "analogComp.h"
 
+const int refPin = 9;    // reference output
+
 long startMicros = 0;
 volatile long endMicros = 0;
 volatile char detected = 0;
@@ -10,6 +12,10 @@ void setup() {
   // init serial port
   Serial.begin(9600);
   Serial.println("* Verification tool *");
+
+  //set reference. Alternative: voltage divider
+  pinMode(refPin, OUTPUT);   // sets the pin as output
+  analogWrite(refPin, 128);
 
   analogComparator.setOn(AIN0, AIN1); // square wave: D6, reference: D7 on Arduino Uno
 
