@@ -1,7 +1,7 @@
 function [result] = measureLatency()
 
     global s; % is initialized empty if not exists
-    if(~(exist('s','var') && isvalid(s)))
+    if(isa(s,'double') || ~isvalid(s))
         disp('Running connection setup');
         connectArduino; % WARNING: this clears the workspace
     end

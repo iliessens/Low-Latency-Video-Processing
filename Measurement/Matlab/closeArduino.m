@@ -1,4 +1,3 @@
-instrreset();
 if(~exist('s'))
     disp('Aready closed');
     return;

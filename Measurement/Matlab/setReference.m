@@ -5,7 +5,7 @@ if(~exist('s','var'))
 end
 
 val = input('New reference value: ');
-if(val > 255 || val < 0) 
+if(val > 255 || val <= 0) 
     disp('Invalid value must be in [0,255]');
     return;
 end
@@ -16,7 +16,7 @@ out = fscanf(s);
 status = startsWith(out,'New reference set to:');
 
 if(status~=1)
-    warn('Error settings reference voltage');
+    warning('Error settings reference voltage');
     return;
 end
 
@@ -26,7 +26,7 @@ disp('Testing measurement');
 
 status = measureLatency();
 if(status < 0)
-    warn('Measurement unsuccesfull');
+    warning('Measurement unsuccesfull');
 else
     disp('New calibration OK');
 end
