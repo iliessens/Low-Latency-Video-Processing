@@ -1,14 +1,14 @@
-n=10;
+n=30;
 
 results = zeros(1,n);
 for i=1:n
     result = measureLatency;
     if(result < 0) 
-        disp('Stopping measurements');
-        return;
+        disp('Invalid measurement dropped');
     else
         results(i) = result;
     end
+    pause(0.1);
 end
 
 disp([ newline '** DONE **' newline]);

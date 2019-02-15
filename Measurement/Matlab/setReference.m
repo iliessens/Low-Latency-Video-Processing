@@ -1,10 +1,10 @@
 global s;
-if(~exist('s','var'))
+if(isa(s,'double') || ~isvalid(s))
     disp('Running connection setup');
     connectArduino; % WARNING: this clears the workspace
 end
 
-val = input('New reference value: ');
+val = input('New reference offset: ');
 if(val > 255 || val <= 0) 
     disp('Invalid value must be in [0,255]');
     return;
@@ -13,10 +13,10 @@ end
 % send command
 fprintf(s,num2str(val));
 out = fscanf(s);
-status = startsWith(out,'New reference set to:');
+status = startsWith(out,'New reference offset set to:');
 
 if(status~=1)
-    warning('Error settings reference voltage');
+    warning('Error settings reference voltage offset');
     return;
 end
 

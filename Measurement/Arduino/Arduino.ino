@@ -4,6 +4,7 @@
 
 const int ledPin = 5;
 const int refPin = 9;    // reference output
+const int lightADC = A0;
 
 long startMicros = 0;
 volatile long endMicros = 0;
@@ -17,8 +18,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("* Latency measurement tool *");
 
-  pinMode(refPin, OUTPUT);   // sets the pin as output
-  analogWrite(refPin, 128);
+  initRef();
   pinMode(ledPin, OUTPUT);
 
   // setup comparator
@@ -31,12 +31,19 @@ void loop() {
   if (Serial.available() > 0) {
     processUI();
   }
+
+  updateRef();
 }
 
 void measure() {
   Serial.println("Starting measurement...");
+  //set flags
+  detected = 0;
+
+  //Time critical
   digitalWrite(ledPin, HIGH);
   startMicros = micros();
+  
   delay(100);
   digitalWrite(ledPin, LOW);
 
@@ -44,7 +51,7 @@ void measure() {
   while (!detected) {
     long time = micros() - startMicros;
     if (time > timeOut) break;
-    delay(1000);
+    delay(500);
   }
 
   if (detected) {
@@ -79,22 +86,20 @@ void processUI() {
   }
 
   // Flush buffer
-  while(Serial.available() > 0) {
+  while (Serial.available() > 0) {
     Serial.read();
   }
 }
 
 void setRefValue() {
   int value = Serial.parseInt();
-  if (value > 0) {
-    analogWrite(refPin, value);
-    Serial.print("New reference set to: ");
+  if (value != 0) {
+    Serial.print("New reference offset set to: ");
     Serial.println(value);
-    delay(1000); // wait for RC filter to stabilize
+    setOffset(value);
   }
   else {
     Serial.println("Unknown command");
   }
 }
-
 
