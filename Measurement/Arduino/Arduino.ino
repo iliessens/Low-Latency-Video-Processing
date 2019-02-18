@@ -5,6 +5,7 @@
 const int ledPin = 5;
 const int refPin = 9;    // reference output
 const int lightADC = A0;
+#define INITIAL_OFFSET 40
 
 long startMicros = 0;
 volatile long endMicros = 0;
@@ -20,6 +21,7 @@ void setup() {
 
   initRef();
   pinMode(ledPin, OUTPUT);
+  setOffset(INITIAL_OFFSET);
 
   // setup comparator
   analogComparator.setOn(AIN0, AIN1); // sensor: D6, reference: D7 on Arduino Uno

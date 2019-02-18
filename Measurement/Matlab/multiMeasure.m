@@ -8,8 +8,10 @@ for i=1:n
     else
         results(i) = result;
     end
-    pause(0.1);
+    pause(1);
 end
+
+results = results(results~=0); % remove dropped values
 
 disp([ newline '** DONE **' newline]);
 disp('Results:');
@@ -22,7 +24,7 @@ m=std(results);
 fprintf('Standard Deviation: %0.2f\n',m);
 
 %create scatter plot
-x=1:n;
+x=1:length(results);
 scatter(x,results);
 xlabel 'Measurement []'
 ylabel 'Latency [ms]'
