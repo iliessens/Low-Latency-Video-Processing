@@ -14,6 +14,8 @@ int state = 0;
 const int outPin = 5;
 const int refPin = 9;   // reference output
 
+volatile long triggerTime = 0; // measure time to simulate real measurement tool
+
 void setup() {
   pinMode(refPin, OUTPUT);   // sets the pin as output
   analogWrite(refPin, 128);
@@ -30,6 +32,7 @@ void setup() {
 }
 
 void edgeDetected() {
+    triggerTime = micros();
   if (state == 1) { // zo geschreven omdat bibliotheek constanten nodig heeft
 #if USEFAST
     digitalWriteFast(outPin, LOW);
@@ -48,5 +51,5 @@ void edgeDetected() {
 }
 
 void loop() {
-  // emtpy
+  
 }
