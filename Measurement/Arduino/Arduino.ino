@@ -11,6 +11,7 @@ long startMicros = 0;
 volatile long endMicros = 0;
 volatile char detected = 0;
 
+#define MICROS_PER_MILLI 1000
 #define MICROSPERSECOND 1000000
 long timeOut = MICROSPERSECOND * 5;
 
@@ -42,7 +43,7 @@ void measure() {
   //set flags
   detected = 0;
 
-  //Time critical
+  //Time critical block
   digitalWrite(ledPin, HIGH);
   startMicros = micros();
   
@@ -65,6 +66,8 @@ void measure() {
 
     //reset flag
     detected = 0;
+
+    delay(30); // make sure light pulse has died out > 1 frame delay
   }
   else {
     Serial.println("Timed out. Check placement");

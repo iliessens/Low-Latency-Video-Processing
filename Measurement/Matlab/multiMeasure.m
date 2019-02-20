@@ -1,5 +1,4 @@
-n=30;
-
+n=60;
 results = zeros(1,n);
 for i=1:n
     result = measureLatency;
@@ -8,7 +7,7 @@ for i=1:n
     else
         results(i) = result;
     end
-    pause(1);
+    pause(random('norm',1,0.5)); %random delay
 end
 
 results = results(results~=0); % remove dropped values
