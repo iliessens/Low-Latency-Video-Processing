@@ -6,8 +6,8 @@
 #include <conio.h>
 #include <comutil.h>
 
-DeckLinkInputDevice::DeckLinkInputDevice(IDeckLink* device)
-	: m_deckLink(device), m_deckLinkInput(NULL)
+DeckLinkInputDevice::DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor)
+	: m_deckLink(device), m_deckLinkInput(NULL), processor(videoprocessor)
 {
 	m_deckLink->AddRef();
 	this->init();
@@ -113,8 +113,8 @@ HRESULT DeckLinkInputDevice::VideoInputFrameArrived(/* in */ IDeckLinkVideoInput
 
 		if (inputFrameValid)
 		{
-			// If valid frame, add to queue for processing and notify
-			//videoFrame->AddRef();
+			videoFrame->AddRef();
+			processor->publishFrame(videoFrame);
 		}
 
 	}

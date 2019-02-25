@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DeckLinkAPI_h.h"
+#include "VideoProcessor.h"
 #include <atomic>
 
 class DeckLinkInputDevice : public IDeckLinkInputCallback
@@ -9,10 +10,11 @@ private:
 	IDeckLink*							m_deckLink;
 	IDeckLinkInput*						m_deckLinkInput;
 	std::atomic<uint32_t>				m_refCount;
+	VideoProcessor*						processor;
 	
 	HRESULT init();
 public:
-	DeckLinkInputDevice(IDeckLink* device);
+	DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor);
 
 	HRESULT StartCapture();
 	void StopCapture();
