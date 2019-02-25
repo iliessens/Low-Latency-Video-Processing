@@ -176,6 +176,9 @@
   <ItemGroup>
     <Midl Include="..\..\include\DeckLinkAPI.idl" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="settings.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

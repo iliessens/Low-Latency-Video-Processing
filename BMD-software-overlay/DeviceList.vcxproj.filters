@@ -22,4 +22,9 @@
       <Filter>DeckLink API</Filter>
     </Midl>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="settings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
