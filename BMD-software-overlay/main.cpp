@@ -6,6 +6,7 @@
 #include "DeckLinkAPI_h.h"
 
 #include "settings.h"
+#include "DeckLinkInput.h"
 
 IDeckLinkIterator* initCom() {
 	IDeckLinkIterator* deckLinkIterator;
@@ -45,7 +46,6 @@ IDeckLink* findDeckLink(IDeckLinkIterator* deckLinkIterator) {
 
 		// save pointer to selected device
 		if (numDevices == BMD_DEVICE) {
-			selectedDecklink = deckLink;
 			printf("-> ");
 		}
 
@@ -58,8 +58,8 @@ IDeckLink* findDeckLink(IDeckLinkIterator* deckLinkIterator) {
 			printf("(%d) %s \n", numDevices, (char*)deviceName);
 		}
 
-		// Release the IDeckLink instance when we've finished with it to prevent leaks
-		deckLink->Release();
+		if(numDevices == BMD_DEVICE) selectedDecklink = deckLink;
+		else deckLink->Release(); // Release the IDeckLink instance when we've finished with it to prevent leaks
 	}
 
 	deckLinkIterator->Release();
@@ -81,14 +81,21 @@ int	_tmain (int argc, _TCHAR* argv[])
 	IDeckLink*		deckLink = findDeckLink(deckLinkIterator);
 
 	printf("\n");
-	if (deckLink == NULL)
+	if (deckLink == NULL) {
 		printf("The selected device was not found!\n");
+		return 1;
+	}
+
+	DeckLinkInputDevice* input = new DeckLinkInputDevice(deckLink);
+	result = input->StartCapture();
+
+	// Wait for any key press before exiting
+	_getch();
+
+	input->StopCapture();
 	
 	// Uninitalize COM on this thread
 	CoUninitialize();
-	
-	// Wait for any key press before exiting
-	_getch();
 	
 	return 0;
 }
