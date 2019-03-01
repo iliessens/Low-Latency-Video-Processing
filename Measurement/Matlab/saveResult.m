@@ -1,4 +1,4 @@
-if~(exist('result','var'))
+if~(exist('results','var'))
     disp('Please start a measurement first');
     return;
 end
