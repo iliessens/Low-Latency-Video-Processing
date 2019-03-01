@@ -96,10 +96,13 @@ HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputForma
 
 	BSTR nameBSTR;
 	newMode->GetName(&nameBSTR);
-	_bstr_t		deviceName(nameBSTR, false);
+	_bstr_t		modeName(nameBSTR, false);
 
-	printf("Mode: %s\n", (char*) deviceName);
-	// Stop the capture
+	printf("Mode: %s\n", (char*) modeName);
+	
+	printf("Pixel format: ");
+	if (detectedSignalFlags & bmdDetectedVideoInputRGB444) printf("10-bit RGB\n");
+	else printf("10-bit YUV\n");
 	
 	return 0;
 }
