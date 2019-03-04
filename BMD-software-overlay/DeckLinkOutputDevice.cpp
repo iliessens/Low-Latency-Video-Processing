@@ -5,6 +5,7 @@
 
 #include "DeckLinkOutputDevice.h"
 #include "settings.h"
+#include "Chronometer.h"
 
 DeckLinkOutputDevice::DeckLinkOutputDevice(IDeckLink* deckLink) 
 	: m_deckLink(deckLink), m_refCount(1)
@@ -99,6 +100,8 @@ HRESULT	DeckLinkOutputDevice::ScheduledPlaybackHasStopped()
 int DeckLinkOutputDevice::showFrame(IDeckLinkVideoFrame* frame) {
 	HRESULT result = m_deckLinkOutput->DisplayVideoFrameSync(frame);
 	frame->Release();
+
+	Chronometer::stopAndPrint();
 
 	if (result == S_OK)  return 0;
 	else return 1;

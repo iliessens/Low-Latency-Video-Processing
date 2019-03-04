@@ -25,6 +25,9 @@
     <ClCompile Include="VideoProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Chronometer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="..\..\include\DeckLinkAPI.idl">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="VideoProcessor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chronometer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

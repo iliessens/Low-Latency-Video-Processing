@@ -5,6 +5,7 @@
 #include <tchar.h>
 #include <conio.h>
 #include <comutil.h>
+#include "Chronometer.h"
 
 DeckLinkInputDevice::DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor)
 	: m_deckLink(device), m_deckLinkInput(NULL), processor(videoprocessor)
@@ -109,6 +110,7 @@ HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputForma
 
 HRESULT DeckLinkInputDevice::VideoInputFrameArrived(/* in */ IDeckLinkVideoInputFrame* videoFrame, /* in */ IDeckLinkAudioInputPacket* audioPacket)
 {
+	Chronometer::start();
 	if (videoFrame)
 	{
 		bool inputFrameValid = ((videoFrame->GetFlags() & bmdFrameHasNoInputSource) == 0);

@@ -170,6 +170,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Chronometer.cpp" />
     <ClCompile Include="DeckLinkOutputDevice.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DeckLinkAPI_i.c" />
@@ -180,6 +181,7 @@
     <Midl Include="..\..\include\DeckLinkAPI.idl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Chronometer.h" />
     <ClInclude Include="DeckLinkInput.h" />
     <ClInclude Include="DeckLinkOutputDevice.h" />
     <ClInclude Include="settings.h" />
