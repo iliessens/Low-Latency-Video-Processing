@@ -7,3 +7,7 @@
 
 //enable chronometer
 #define EN_CHRONO 0
+
+//image settings
+#define IMAGE_NAME "../../720_Test.tga"
+#define IMAGE_CHANNELS 4

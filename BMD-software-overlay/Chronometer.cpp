@@ -1,3 +1,6 @@
+// simpele chronometer klasse, 
+// naar een idee van https://stackoverflow.com/questions/22387586/measuring-execution-time-of-a-function-in-c
+
 #include "Chronometer.h"
 #include "settings.h"
 #include <iostream>

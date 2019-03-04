@@ -4,29 +4,41 @@
 
 VideoProcessor::VideoProcessor() {
 	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitARGB); // only this supported for now
+	imageSource = new ImageSource();
+	overlayPtr = imageSource->getImage();
 }
 
-void VideoProcessor::processRow(uint32_t* rowData, int width) {
+void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
+	long height = frame->GetHeight();
+	long width = frame->GetWidth();
+	long rowWords = frame->GetRowBytes() / 4; // 4 bytes in int32
 
-	for (int i = 0; i < width; i++) {
-		uint32_t* pixelPtr = rowData + i;
-		*pixelPtr = *pixelPtr & 0xFFFFFFFF;
+	uint32_t* frameDataPointer;
+	frame->GetBytes((void**)&frameDataPointer);
+
+	for (int i = 0; i < height; i++) { //
+		uint32_t* rowPtr = frameDataPointer + i * rowWords;
+		uint8_t* overlayRowPtr = overlayPtr + i * 4 * width;
+
+		for (int j = 0; j < width; j++) {
+			uint32_t* pixelPtr = rowPtr + j;
+			uint8_t* overlayPixelPtr = overlayRowPtr + j * 4;
+			//*pixelPtr = *pixelPtr & 0xFFFFFFFF;
+			*pixelPtr = (*(overlayPixelPtr) << 24)
+				| (*(overlayPixelPtr + 1) << 16)
+				| (*(overlayPixelPtr + 2) << 8)
+				| *(overlayPixelPtr + 3);
+
+			// Twee karakters per component BGRA
+			//*pixelPtr = 0x0000FFFF; // dit geeft rood
+		}
 	}
 }
+
 
 void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame)
 {
-	long height = frame->GetHeight();
-	long width = frame->GetWidth();
-	long rowWords = frame->GetRowBytes() / 4; // 4 bytes in int
-
-	uint32_t* frameDataPointer;
-	frame->GetBytes((void**) &frameDataPointer);
-
-	for (int i = 0; i < height; i++) {
-		uint32_t* rowPtr = frameDataPointer + i * rowWords;
-		this->processRow(rowPtr, width);
-	}
+	processFrame(frame);
 
 	int fail = output->showFrame(frame);
 	if (fail) printf("Error outputting frame\n");

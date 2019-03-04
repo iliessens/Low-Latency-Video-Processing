@@ -8,6 +8,9 @@
     <Filter Include="DeckLink API">
       <UniqueIdentifier>{b99157dd-c613-4797-aa73-f56c634bb3c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="stb">
+      <UniqueIdentifier>{fa45de67-907a-413e-9cce-df914cbcd7b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeckLinkAPI_i.c">
@@ -26,6 +29,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Chronometer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,6 +54,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Chronometer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSource.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
