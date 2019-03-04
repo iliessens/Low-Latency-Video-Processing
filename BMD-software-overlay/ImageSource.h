@@ -3,11 +3,11 @@
 
 class ImageSource {
 private:
-	uint8_t * imgPtr;
+	uint32_t * imgPtr;
 	int width, height, bpp;
 
 public:
 	ImageSource();
 	~ImageSource();
-	uint8_t* getImage();
+	uint32_t* getImage();
 };

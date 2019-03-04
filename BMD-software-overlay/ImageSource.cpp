@@ -6,18 +6,18 @@
 #include "stb_image.h"
 
 ImageSource::ImageSource() {
-	width = 0;
+	uint8_t* input = stbi_load(IMAGE_NAME, &width, &height, &bpp, IMAGE_CHANNELS);
+	imgPtr = (uint32_t *) input;
 
-	imgPtr = stbi_load(IMAGE_NAME, &width, &height, &bpp, IMAGE_CHANNELS);
-
-	if(width != 0) printf("Image loaded: %dx%d,  %d channels", width, height, bpp);
+	if(input != NULL) printf("Image loaded: %dx%d,  %d channels\n", width, height, bpp);
+	else printf("Error loading image!");
 }
 
 ImageSource::~ImageSource() {
 	stbi_image_free(imgPtr);
 }
 
-uint8_t * ImageSource::getImage()
+uint32_t * ImageSource::getImage()
 {
 	return imgPtr;
 }

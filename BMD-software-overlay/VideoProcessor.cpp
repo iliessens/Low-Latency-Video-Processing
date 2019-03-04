@@ -3,7 +3,7 @@
 #include <assert.h>
 
 VideoProcessor::VideoProcessor() {
-	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitARGB); // only this supported for now
+	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitBGRA); // only this supported for now
 	imageSource = new ImageSource();
 	overlayPtr = imageSource->getImage();
 }
@@ -18,19 +18,17 @@ void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 
 	for (int i = 0; i < height; i++) { //
 		uint32_t* rowPtr = frameDataPointer + i * rowWords;
-		uint8_t* overlayRowPtr = overlayPtr + i * 4 * width;
+		uint32_t* overlayRowPtr = overlayPtr + i * width;
 
 		for (int j = 0; j < width; j++) {
 			uint32_t* pixelPtr = rowPtr + j;
-			uint8_t* overlayPixelPtr = overlayRowPtr + j * 4;
-			//*pixelPtr = *pixelPtr & 0xFFFFFFFF;
-			*pixelPtr = (*(overlayPixelPtr) << 24)
-				| (*(overlayPixelPtr + 1) << 16)
-				| (*(overlayPixelPtr + 2) << 8)
-				| *(overlayPixelPtr + 3);
+			uint32_t* overlayPixelPtr = overlayRowPtr + j;
 
-			// Twee karakters per component BGRA
-			//*pixelPtr = 0x0000FFFF; // dit geeft rood
+			uint8_t alpha = ((*overlayPixelPtr) & 0xFF000000) >> 24;
+			if (alpha) *pixelPtr = *overlayPixelPtr;
+
+			// Twee karakters per component ARGB
+			//*pixelPtr = 0xFFFF0000; // dit geeft rood
 		}
 	}
 }
