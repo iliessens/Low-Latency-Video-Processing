@@ -9,5 +9,7 @@
 #define EN_CHRONO 0
 
 //image settings
-#define IMAGE_NAME "../../720_Test.tga"
+#define IMAGE_NAME "../../720_Test_small.tga"
 #define IMAGE_CHANNELS 4
+
+#define NUM_THREADS 8

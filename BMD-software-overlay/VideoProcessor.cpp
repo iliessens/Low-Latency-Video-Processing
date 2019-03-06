@@ -1,28 +1,19 @@
 #include "VideoProcessor.h"
 #include "settings.h"
 #include <assert.h>
+#include <thread>         // std::thread
 
-VideoProcessor::VideoProcessor() {
-	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitBGRA); // only this supported for now
-	imageSource = new ImageSource();
-	overlayPtr = imageSource->getImage();
-}
+volatile uint8_t * currentFrame;
 
-void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
-	long height = frame->GetHeight();
-	long width = frame->GetWidth();
-	long rowWords = frame->GetRowBytes();
+void processBlock(uint8_t* overlayPtr, long startOffset, int numBytes) {
 
-	uint8_t* frameDataPointer;
-	frame->GetBytes((void**)&frameDataPointer);
+		uint8_t* frameDataPointer = const_cast<uint8_t*>(currentFrame); // save volatile var locally
+		frameDataPointer = frameDataPointer + startOffset;
+		overlayPtr = overlayPtr + startOffset;
 
-	for (int i = 0; i < height; ++i) {
-		uint8_t* rowPtr = frameDataPointer + i * rowWords;
-		uint8_t* overlayRowPtr = overlayPtr + i * 4 * width;
-
-		for (int j = 0; j < rowWords; j = j + 4) {
-			uint8_t* pixelPtr = rowPtr + j;
-			uint8_t* overlayPixelPtr = overlayRowPtr + j;
+		for (int j = 0; j < numBytes; j = j + 4) {
+			uint8_t* pixelPtr = frameDataPointer + j ;
+			uint8_t* overlayPixelPtr = overlayPtr + j;
 
 			uint8_t w = 255 - *(overlayPixelPtr + 3); // 1 - alpha
 
@@ -30,15 +21,36 @@ void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 				uint16_t temp = *(pixelPtr + k) * w;
 				*(pixelPtr + k) = (temp >> 8) + *(overlayPixelPtr + k); // divide by 255 and add
 			}
-
-			//*pixelPtr = *overlayPixelPtr; // B
-			//*(pixelPtr + 1) = *(overlayPixelPtr + 1); // G
-			//*(pixelPtr + 2) = *(overlayPixelPtr + 2); // R
-			//*(pixelPtr + 3) = *(overlayPixelPtr + 3); // A
-
-			//uint8_t alpha = ((*overlayPixelPtr) & 0xFF000000) >> 24;
-			//if (alpha) *pixelPtr = *overlayPixelPtr;
+			//*(pixelPtr) = 0xFF;
+			//*(pixelPtr + 1) = 0;
+			//*(pixelPtr + 2) = 0;
 		}
+}
+
+VideoProcessor::VideoProcessor() {
+	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitBGRA); // only this supported for now
+	imageSource = new ImageSource();
+	overlayPtr = imageSource->getImage();
+
+}
+
+void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
+	long height = frame->GetHeight();
+	long width = frame->GetWidth();
+	long rowWords = frame->GetRowBytes();
+
+	frame->GetBytes((void**)&currentFrame);
+	int numBytes = (rowWords * height) / NUM_THREADS;
+	
+	std::thread* myThreads[NUM_THREADS];
+	for (int i = 0; i < NUM_THREADS; ++i) {
+		long startOffset = numBytes * i;
+		myThreads[i] = new std::thread(processBlock, overlayPtr, startOffset, numBytes);
+	}
+
+	for (int i = 0; i < NUM_THREADS; ++i) {
+		myThreads[i]->join();
+		delete myThreads[i];
 	}
 }
 
