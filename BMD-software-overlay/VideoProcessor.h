@@ -10,7 +10,7 @@ class VideoProcessor {
 private:
 	DeckLinkOutputDevice* output;
 	ImageSource* imageSource;
-	uint32_t* overlayPtr;
+	uint8_t* overlayPtr;
 
 	inline void processFrame(IDeckLinkVideoFrame * frame);
 
