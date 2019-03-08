@@ -49,11 +49,11 @@ void processBlock(uint8_t* overlayPtr, long startOffset, int numBytes) {
 		frameDataPointer = frameDataPointer + startOffset;
 		overlayPtr = overlayPtr + startOffset;
 
-		for (int j = 0; j < numBytes; j = j + 16) {
+		for (int j = 0; j < numBytes; j = j + 64) {
 			uint8_t* pixelPtr = frameDataPointer + j ;
 			uint8_t* overlayPixelPtr = overlayPtr + j;
 
-			for (int i = 0; i <= 4; ++i) { // preprocess 4 pixels
+			for (int i = 0; i <= 16; ++i) { // preprocess 16 pixels
 
 				uint8_t w = 255 - *(overlayPixelPtr + 3 + i * 4); // 1 - alpha
 
@@ -63,7 +63,7 @@ void processBlock(uint8_t* overlayPtr, long startOffset, int numBytes) {
 				}
 			}
 
-			_mm_store_si128((__m128i*) pixelPtr, _mm_add_epi8(*(__m128i*)pixelPtr, *(__m128i*)  overlayPixelPtr));
+			_mm512_store_si512((__m512i*) pixelPtr, _mm512_add_epi8(*(__m512i*)pixelPtr, *(__m512i*)  overlayPixelPtr));
 		}
 }
 
