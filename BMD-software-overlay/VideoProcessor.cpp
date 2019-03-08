@@ -43,27 +43,47 @@ _mm_scale_epu8(__m128i x, __m128i y)
 	return _mm_packus_epi16(xlo, xhi);
 }
 
+// load 4 alpha values into 128 bit register
+ inline __m128i createAlphaVector(uint8_t* overlay) {
+	const uint8_t pix1 = 255 - *(overlay + 3);
+	const uint8_t pix2 = 255 - *(overlay + 7);
+	const uint8_t pix3 = 255 - *(overlay + 11);
+	const uint8_t pix4 = 255 - *(overlay + 15);
+	const __m128i scalar = _mm_setr_epi8(pix1, pix1, pix1, pix1,
+		pix2, pix2, pix2, pix2,
+		pix3, pix3, pix3, pix3,
+		pix4, pix4, pix4, pix4);
+
+	return scalar;
+}
+
+
 void processBlock(uint8_t* overlayPtr, long startOffset, int numBytes) {
 
 		uint8_t* frameDataPointer = const_cast<uint8_t*>(currentFrame); // save volatile var locally
 		frameDataPointer = frameDataPointer + startOffset;
 		overlayPtr = overlayPtr + startOffset;
 
-		for (int j = 0; j < numBytes; j = j + 64) {
+		for (int j = 0; j < numBytes; j = j + 16) {
 			uint8_t* pixelPtr = frameDataPointer + j ;
 			uint8_t* overlayPixelPtr = overlayPtr + j;
+			
+			// fil vector with alpha values to make one-by-one multiplication possible
+			__m128i alpha = createAlphaVector(overlayPixelPtr);
 
-			for (int i = 0; i <= 16; ++i) { // preprocess 16 pixels
+			//scale incoming image with alpha value
+			__m128i multiplied = _mm_scale_epu8(*(__m128i*) pixelPtr, alpha);
 
-				uint8_t w = 255 - *(overlayPixelPtr + 3 + i * 4); // 1 - alpha
+			// write result to image memory
+			_mm_store_si128((__m128i*) pixelPtr, multiplied);
 
-				for (int k = 0; k < IMAGE_CHANNELS - 1; ++k) {
-					uint16_t temp = *(pixelPtr + k + i*4) * w;
-					*(pixelPtr + k + i*4) = (temp >> 8); // divide by 255 and add
-				}
-			}
+		}
 
-			_mm512_store_si512((__m512i*) pixelPtr, _mm512_add_epi8(*(__m512i*)pixelPtr, *(__m512i*)  overlayPixelPtr));
+		//Second loop for instructions that process multiple pixels
+		for (int j = 0; j < numBytes; j = j + 64) {
+			uint8_t* pixelPtr = frameDataPointer + j;
+			uint8_t* overlayPixelPtr = overlayPtr + j;
+			_mm512_store_si512((__m512i*)pixelPtr, _mm512_add_epi8(*(__m512i*)pixelPtr, *(__m512i*)overlayPixelPtr));
 		}
 }
 
