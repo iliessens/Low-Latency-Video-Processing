@@ -12,15 +12,21 @@ ImageSource::ImageSource() {
 	else printf("Error loading image!");
 
 	premultiply(imgPtr);
+	preCalculate();
 }
 
 ImageSource::~ImageSource() {
 	stbi_image_free(imgPtr);
+	free(alphaPtr);
 }
 
 uint8_t * ImageSource::getImage()
 {
 	return imgPtr;
+}
+
+uint8_t* ImageSource::getAlpha() {
+	return alphaPtr;
 }
 
 void ImageSource::premultiply(uint8_t * inputImg) {
@@ -40,3 +46,16 @@ void ImageSource::premultiply(uint8_t * inputImg) {
 
 	printf("Done\n");
 }
+
+// reken op voorhand reeds de 1-alpha waarden uit
+void ImageSource::preCalculate() {
+	const int resolution = width * height;
+	alphaPtr = (uint8_t*) malloc(resolution*4);
+
+	for (int i = 0; i < resolution; ++i) { // for each pixel
+		uint8_t pix = 255 - *(imgPtr + 4 * i + 3);
+		for (int j = 0; j < 4; ++j) {
+			*(alphaPtr + j + 4 * i) = pix;
+		}
+	}
+	}

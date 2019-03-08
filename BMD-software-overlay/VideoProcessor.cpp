@@ -43,35 +43,20 @@ _mm512_scale_epu8(__m512i x, __m512i y)
 	return _mm512_packus_epi16(xlo, xhi);
 }
 
-// load 4 alpha values into 512 bit register
- inline __m512i createAlphaVector(uint8_t* overlay) {
-	 uint8_t* scalars = (uint8_t*) malloc(64); //64 bytes = 512 bits
-
-	 for (int i = 0; i < 16; ++i) {
-		 uint8_t pix = 255 - *(overlay + 4*i + 3);
-		 for (int j = 0; j < 4; ++j) {
-			 *(scalars + j +  4*i) = pix;
-		 }
-	 }
-
-	 __m512i result = _mm512_load_si512(scalars);
-	free(scalars); // release temporary buffer
-	return result;
-}
-
-
-void processBlock(uint8_t* overlayPtr, long startOffset, int numBytes) {
+void processBlock(uint8_t* overlayPtr, uint8_t* alphaPtr, long startOffset, int numBytes) {
 
 		uint8_t* frameDataPointer = const_cast<uint8_t*>(currentFrame); // save volatile var locally
 		frameDataPointer = frameDataPointer + startOffset;
 		overlayPtr = overlayPtr + startOffset;
+		alphaPtr = alphaPtr + startOffset;
 
 		for (int j = 0; j < numBytes; j = j + 64) {
 			uint8_t* pixelPtr = frameDataPointer + j ;
 			uint8_t* overlayPixelPtr = overlayPtr + j;
+			uint8_t* alphaPixelPtr = alphaPtr + j;
 			
 			// fil vector with alpha values to make one-by-one multiplication possible
-			__m512i alpha = createAlphaVector(overlayPixelPtr);
+			__m512i alpha = _mm512_load_si512(alphaPixelPtr);
 
 			//scale incoming image with alpha value
 			__m512i multiplied = _mm512_scale_epu8(*(__m512i*) pixelPtr, alpha);
@@ -85,7 +70,7 @@ VideoProcessor::VideoProcessor() {
 	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitBGRA); // only this supported for now
 	imageSource = new ImageSource();
 	overlayPtr = imageSource->getImage();
-
+	alphaPtr = imageSource->getAlpha();
 }
 
 void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
@@ -99,7 +84,7 @@ void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 	std::thread* myThreads[NUM_THREADS];
 	for (int i = 0; i < NUM_THREADS; ++i) {
 		long startOffset = numBytes * i;
-		myThreads[i] = new std::thread(processBlock, overlayPtr, startOffset, numBytes);
+		myThreads[i] = new std::thread(processBlock, overlayPtr, alphaPtr, startOffset, numBytes);
 	}
 
 	for (int i = 0; i < NUM_THREADS; ++i) {

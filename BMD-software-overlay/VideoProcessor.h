@@ -11,6 +11,7 @@ private:
 	DeckLinkOutputDevice* output;
 	ImageSource* imageSource;
 	uint8_t* overlayPtr;
+	uint8_t* alphaPtr;
 
 	inline void processFrame(IDeckLinkVideoFrame * frame);
 
