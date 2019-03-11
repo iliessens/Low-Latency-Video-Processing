@@ -1,7 +1,6 @@
 #include "VideoProcessor.h"
-#include "settings.h"
 #include <assert.h>
-#include <thread>         // std::thread
+#include <future>         // std::thread
 #include <intrin.h>
 
 volatile uint8_t * currentFrame;
@@ -71,9 +70,17 @@ VideoProcessor::VideoProcessor() {
 	imageSource = new ImageSource();
 	overlayPtr = imageSource->getImage();
 	alphaPtr = imageSource->getAlpha();
+
+	timeout = new std::chrono::milliseconds(FRAME_TIME - 1); // make sure frame is done before next
 }
 
-void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
+VideoProcessor::~VideoProcessor()
+{
+	delete imageSource;
+	delete timeout;
+}
+
+bool VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 	long height = frame->GetHeight();
 	long width = frame->GetWidth();
 	long rowWords = frame->GetRowBytes();
@@ -81,22 +88,31 @@ void VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 	frame->GetBytes((void**)&currentFrame);
 	int numBytes = (rowWords * height) / NUM_THREADS;
 
-	std::thread* myThreads[NUM_THREADS];
+	std::future<void> myFunctions[NUM_THREADS];
 	for (int i = 0; i < NUM_THREADS; ++i) {
 		long startOffset = numBytes * i;
-		myThreads[i] = new std::thread(processBlock, overlayPtr, alphaPtr, startOffset, numBytes);
+		myFunctions[i] = std::async(std::launch::async,
+			processBlock, overlayPtr, alphaPtr, startOffset, numBytes);
 	}
 
 	for (int i = 0; i < NUM_THREADS; ++i) {
-		myThreads[i]->join();
-		delete myThreads[i];
+		std::future_status stat = myFunctions[i].wait_for(*timeout);
+		// give up when it take too long
+		// prevents queue from building with latency increase as result
+		if (stat == std::future_status::timeout) return false;
 	}
+
+	return true;
 }
 
 
 void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame)
 {
-	processFrame(frame);
+	bool success = processFrame(frame);
+	if (!success) {
+		printf("Dropped frame\n");
+		return; // do not write to output if failed
+	}
 
 	int fail = output->showFrame(frame);
 	if (fail) printf("Error outputting frame\n");

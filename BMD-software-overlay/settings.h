@@ -5,6 +5,9 @@
 #define DISPLAY_MODE BMDDisplayMode::bmdModeHD720p50
 #define PIXEL_MODE BMDPixelFormat::bmdFormat8BitBGRA
 
+#define FRAME_RATE 50 //fps
+#define FRAME_TIME 1000/FRAME_RATE
+
 //enable chronometer
 #define EN_CHRONO 0
 
@@ -12,4 +15,4 @@
 #define IMAGE_NAME "../../720_Test.tga"
 #define IMAGE_CHANNELS 4
 
-#define NUM_THREADS 8
+#define NUM_THREADS 2
