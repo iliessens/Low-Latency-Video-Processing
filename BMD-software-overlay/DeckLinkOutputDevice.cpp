@@ -106,3 +106,8 @@ int DeckLinkOutputDevice::showFrame(IDeckLinkVideoFrame* frame) {
 	if (result == S_OK)  return 0;
 	else return 1;
 }
+
+void DeckLinkOutputDevice::getEmptyFrame(IDeckLinkMutableVideoFrame** frame) {
+	const int rowBytes = WIDTH * IMAGE_CHANNELS;
+	m_deckLinkOutput->CreateVideoFrame(WIDTH, HEIGHT, rowBytes, PIXEL_MODE, bmdFrameFlagDefault, frame);
+}

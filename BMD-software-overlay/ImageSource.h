@@ -4,7 +4,7 @@
 class ImageSource {
 private:
 	uint8_t * imgPtr;
-	uint8_t*  alphaPtr;
+	uint8_t*  alphaPtr = NULL;
 	int width, height, bpp;
 
 public:

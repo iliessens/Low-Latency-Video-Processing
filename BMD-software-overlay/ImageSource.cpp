@@ -13,7 +13,8 @@ ImageSource::ImageSource(char* name, int channels) {
 
 ImageSource::~ImageSource() {
 	stbi_image_free(imgPtr);
-	free(alphaPtr);
+	
+	if(alphaPtr != NULL) free(alphaPtr);
 }
 
 uint8_t * ImageSource::getImage()

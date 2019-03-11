@@ -2,10 +2,12 @@
 
 #include "DeckLinkOutputDevice.h"
 #include "DeckLinkAPI_h.h"
+
 #include <stdint.h>
 #include <chrono>
-#include "settings.h"
+#include <thread> //std::thread
 
+#include "settings.h"
 #include "ImageSource.h"
 
 class VideoProcessor {
@@ -16,7 +18,11 @@ private:
 	uint8_t* alphaPtr;
 	std::chrono::milliseconds* timeout;
 
+	void inputWatchdog();
+	std::thread* inputWacthdogThread;
+
 	inline bool processFrame(IDeckLinkVideoFrame * frame);
+
 
 public:
 	VideoProcessor();

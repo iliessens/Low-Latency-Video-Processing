@@ -1,9 +1,12 @@
 #include "VideoProcessor.h"
 #include <assert.h>
-#include <future>         // std::thread
+#include <future>
 #include <intrin.h>
 
+using namespace std::chrono_literals;
+
 volatile uint8_t * currentFrame;
+volatile unsigned int frameCounter = 0;
 
 // Source: http://www.alfredklomp.com/programming/sse-intrinsics/
 static inline __m512i
@@ -65,6 +68,31 @@ void processBlock(uint8_t* __restrict overlayPtr, uint8_t* __restrict alphaPtr, 
 		}
 }
 
+void VideoProcessor::inputWatchdog() {
+	unsigned int lastFrame = 0;
+
+	while (true) {
+		if (lastFrame == frameCounter) {
+			// no frame happened
+			printf("No input signal\n");
+
+			ImageSource placeholder("nosignal.tga", 4);
+
+			IDeckLinkMutableVideoFrame* framePtr;
+			output->getEmptyFrame(&framePtr);
+			uint8_t* outBytes;
+			framePtr->GetBytes((void**) &outBytes);
+			memcpy(outBytes, placeholder.getImage(), WIDTH*HEIGHT*IMAGE_CHANNELS);
+
+			output->showFrame(framePtr);
+
+			framePtr->Release();
+		}
+		lastFrame = frameCounter; // save previous counter
+		std::this_thread::sleep_for(1s); // chrono literals
+	}
+}
+
 VideoProcessor::VideoProcessor() {
 	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitBGRA); // only this supported for now
 	imageSource = new ImageSource(IMAGE_NAME,IMAGE_CHANNELS);
@@ -76,12 +104,16 @@ VideoProcessor::VideoProcessor() {
 	alphaPtr = imageSource->getAlpha();
 
 	timeout = new std::chrono::milliseconds(FRAME_TIME - 1); // make sure frame is done before next
+
+	//Start no signal watchdog
+	inputWacthdogThread =  new std::thread(&VideoProcessor::inputWatchdog,this);
 }
 
 VideoProcessor::~VideoProcessor()
 {
 	delete imageSource;
 	delete timeout;
+	delete inputWacthdogThread;
 }
 
 bool VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
@@ -112,6 +144,8 @@ bool VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 
 void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame)
 {
+	++frameCounter;
+
 	bool success = processFrame(frame);
 	if (!success) {
 		printf("Dropped frame\n");

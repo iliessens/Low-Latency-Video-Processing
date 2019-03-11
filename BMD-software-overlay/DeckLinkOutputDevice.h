@@ -15,6 +15,7 @@ private:
 public:
 	DeckLinkOutputDevice(IDeckLink* deckLink);
 	int showFrame(IDeckLinkVideoFrame* frame);
+	void getEmptyFrame(IDeckLinkMutableVideoFrame** frame);
 
 	HRESULT StartOutput();
 	virtual ~DeckLinkOutputDevice();
