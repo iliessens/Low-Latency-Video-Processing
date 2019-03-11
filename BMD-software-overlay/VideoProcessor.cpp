@@ -67,7 +67,11 @@ void processBlock(uint8_t* __restrict overlayPtr, uint8_t* __restrict alphaPtr, 
 
 VideoProcessor::VideoProcessor() {
 	assert(PIXEL_MODE == BMDPixelFormat::bmdFormat8BitBGRA); // only this supported for now
-	imageSource = new ImageSource();
+	imageSource = new ImageSource(IMAGE_NAME,IMAGE_CHANNELS);
+	// do one-time calculations
+	imageSource->premultiply();
+	imageSource->preCalculate();
+
 	overlayPtr = imageSource->getImage();
 	alphaPtr = imageSource->getAlpha();
 
