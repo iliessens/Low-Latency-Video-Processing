@@ -10,13 +10,13 @@ private:
 	IDeckLink*							m_deckLink;
 	IDeckLinkInput*						m_deckLinkInput;
 	std::atomic<uint32_t>				m_refCount;
-	VideoProcessor*						processor;
+	AbstractVideoProcessor*						processor;
 	
 	char stream;
 
 	HRESULT init();
 public:
-	DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor, char streamId);
+	DeckLinkInputDevice(IDeckLink* device, AbstractVideoProcessor* videoprocessor, char streamId);
 
 	HRESULT StartCapture();
 	void StopCapture();

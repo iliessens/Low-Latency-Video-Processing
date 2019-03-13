@@ -5,9 +5,10 @@
 #include <stdint.h>
 
 #include "settings.h"
+#include "AbstractVideoProcessor.h"
 #include "VideoProcessor.h"
 
-class Framesync {
+class Framesync : public AbstractVideoProcessor {
 private:
 	DeckLinkOutputDevice* output;
 	VideoProcessor* processor;
@@ -17,6 +18,5 @@ public:
 	~Framesync();
 
 	void publishFrame(IDeckLinkVideoFrame* frame, char stream);
-
 	void setOutput(DeckLinkOutputDevice* output);
 };

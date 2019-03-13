@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "DeckLinkInput.h"
 #include "DeckLinkOutputDevice.h"
+#include "Framesync.h"
 
 IDeckLinkIterator* initCom() {
 	IDeckLinkIterator* deckLinkIterator;
@@ -96,7 +97,7 @@ int	_tmain (int argc, _TCHAR* argv[])
 		return 1;
 	}
 
-	VideoProcessor* processor = new VideoProcessor();
+	AbstractVideoProcessor* processor = new Framesync();
 
 	DeckLinkOutputDevice* output = new DeckLinkOutputDevice(deckLink1);
 	processor->setOutput(output);

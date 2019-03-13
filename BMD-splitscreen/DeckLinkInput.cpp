@@ -7,7 +7,7 @@
 #include <comutil.h>
 #include "Chronometer.h"
 
-DeckLinkInputDevice::DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor, char streamId)
+DeckLinkInputDevice::DeckLinkInputDevice(IDeckLink* device, AbstractVideoProcessor* videoprocessor, char streamId)
 	: m_deckLink(device), m_deckLinkInput(NULL), processor(videoprocessor), stream(streamId)
 {
 	m_deckLink->AddRef();

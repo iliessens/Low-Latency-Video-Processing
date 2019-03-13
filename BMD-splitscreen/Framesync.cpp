@@ -1,29 +1,21 @@
 #include "Framesync.h"
 
 Framesync::Framesync() {
-
+	processor = new VideoProcessor();
 }
 
 Framesync::~Framesync()
 {
-
+	delete processor;
 }
 
 
 void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
-	if (stream == 1) {
-		output->showFrame(frame);
-	}
-	else {
-		IDeckLinkMutableVideoFrame* rgbframe;
-		output->getEmptyFrame(&rgbframe);
-
-		output->showFrame(rgbframe);
-	}
+	processor->publishFrame(frame, stream);
 }
 
-void Framesync::setOutput(DeckLinkOutputDevice * output)
-{
-	this->output = output;
+void Framesync::setOutput(DeckLinkOutputDevice* output) {
+	AbstractVideoProcessor::setOutput(output); // pass to default setter
+	processor->setOutput(output);
 }
