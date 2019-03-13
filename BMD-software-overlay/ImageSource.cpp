@@ -21,6 +21,8 @@ ImageSource::ImageSource(char* name, int channels) {
 		error = true;
 	}
 
+	fixPixelFormat();
+
 	if (error) exit(1);
 }
 
@@ -69,3 +71,15 @@ void ImageSource::preCalculate() {
 		}
 	}
 	}
+
+void ImageSource::fixPixelFormat() {
+	int size = width * height * bpp;
+
+	for (int i = 0; i < size; i = i + 4) {
+		uint8_t* curptr = imgPtr + i;
+
+		uint8_t temp = *curptr; // R --> temp
+		*curptr = *(curptr + 2); // B --> R
+		*(curptr + 2) = temp; // temp --> B
+	}
+}

@@ -7,6 +7,8 @@ private:
 	uint8_t*  alphaPtr = NULL;
 	int width, height, bpp;
 
+	void fixPixelFormat();
+
 public:
 	ImageSource(char* name, int channels);
 	~ImageSource();

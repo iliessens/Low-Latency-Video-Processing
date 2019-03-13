@@ -68,6 +68,7 @@ void processBlock(uint8_t* __restrict overlayPtr, uint8_t* __restrict alphaPtr, 
 		}
 }
 
+// show no signal screen when no input frames have arrived
 void VideoProcessor::inputWatchdog() {
 	unsigned int lastFrame = 0;
 
