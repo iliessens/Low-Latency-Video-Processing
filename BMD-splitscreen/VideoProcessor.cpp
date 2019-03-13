@@ -1,15 +1,14 @@
 #include "VideoProcessor.h"
 #include <assert.h>
-#include <future>
-#include <intrin.h>
 
 VideoProcessor::VideoProcessor() {
-
+	CoCreateInstance(CLSID_CDeckLinkVideoConversion, NULL, CLSCTX_ALL, IID_IDeckLinkVideoConversion, (void**)&converter);
+	converter->AddRef();
 }
 
 VideoProcessor::~VideoProcessor()
 {
-
+	converter->Release();
 }
 
 bool VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
@@ -23,11 +22,12 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 		output->showFrame(frame);
 	}
 	else {
+		IDeckLinkMutableVideoFrame* rgbframe;
+		output->getEmptyFrame(&rgbframe);
+		
+		converter->ConvertFrame(frame, rgbframe);
 		frame->Release();
-	}
-}
 
-void VideoProcessor::setOutput(DeckLinkOutputDevice * output)
-{
-	this->output = output;
+		output->showFrame(rgbframe);
+	}
 }

@@ -93,6 +93,9 @@ void DeckLinkInputDevice::StopCapture()
 
 HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputFormatChangedEvents notificationEvents, /* in */ IDeckLinkDisplayMode *newMode, /* in */ BMDDetectedVideoInputFormatFlags detectedSignalFlags)
 {
+	m_deckLinkInput->StopStreams();
+	m_deckLinkInput->DisableVideoInput();
+
 	printf("Stream %d video format changed.\n",stream);
 
 	BSTR nameBSTR;
@@ -103,7 +106,15 @@ HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputForma
 	
 	printf("Pixel format: ");
 	if (detectedSignalFlags & bmdDetectedVideoInputRGB444) printf("10-bit RGB\n");
-	else printf("10-bit YUV\n");
+	else {
+		printf("10-bit YUV\n");
+
+		// restart with YUV format
+		BMDVideoInputFlags inputFlags = bmdVideoInputFlagDefault;
+		inputFlags |= bmdVideoInputEnableFormatDetection;
+		m_deckLinkInput->EnableVideoInput(DISPLAY_MODE, BMDPixelFormat::bmdFormat8BitYUV, inputFlags);
+		m_deckLinkInput->StartStreams();
+	}
 	
 	return 0;
 }

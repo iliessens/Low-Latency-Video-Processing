@@ -170,8 +170,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractVideoProcessor.cpp" />
     <ClCompile Include="Chronometer.cpp" />
     <ClCompile Include="DeckLinkOutputDevice.cpp" />
+    <ClCompile Include="Framesync.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DeckLinkAPI_i.c" />
     <ClCompile Include="DeckLinkInput.cpp" />
@@ -181,9 +183,11 @@
     <Midl Include="..\..\include\DeckLinkAPI.idl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractVideoProcessor.h" />
     <ClInclude Include="Chronometer.h" />
     <ClInclude Include="DeckLinkInput.h" />
     <ClInclude Include="DeckLinkOutputDevice.h" />
+    <ClInclude Include="Framesync.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="VideoProcessor.h" />
   </ItemGroup>
