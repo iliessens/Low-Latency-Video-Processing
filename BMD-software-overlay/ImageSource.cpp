@@ -3,12 +3,25 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "settings.h"
 
 ImageSource::ImageSource(char* name, int channels) {
 	imgPtr = stbi_load(name, &width, &height, &bpp, channels);
 
 	if (imgPtr != NULL) printf("Image %s loaded: %dx%d,  %d channels\n", name, width, height, bpp);
 	else printf("Error loading image!");
+
+	bool error = false;
+	if (height != HEIGHT) {
+		printf("Image %s has wrong height!\n", name);
+		error = true;
+	}
+	if (width != WIDTH) {
+		printf("Image %s has wrong width!\n", name);
+		error = true;
+	}
+
+	if (error) exit(1);
 }
 
 ImageSource::~ImageSource() {
