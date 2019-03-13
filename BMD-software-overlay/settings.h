@@ -15,7 +15,7 @@
 
 //image settings
 #define NO_SIGNAL_IMG "nosignal_1080.tga"
-#define IMAGE_NAME "../../720_Test.tga"
+#define IMAGE_NAME "../../1080_Test_small.tga"
 #define IMAGE_CHANNELS 4
 
 #define NUM_THREADS 2

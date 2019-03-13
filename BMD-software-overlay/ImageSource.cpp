@@ -72,6 +72,7 @@ void ImageSource::preCalculate() {
 	}
 	}
 
+// convert RGBA to BGRA
 void ImageSource::fixPixelFormat() {
 	int size = width * height * bpp;
 
