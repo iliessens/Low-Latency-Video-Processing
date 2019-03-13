@@ -7,7 +7,7 @@
 ImageSource::ImageSource(char* name, int channels) {
 	imgPtr = stbi_load(name, &width, &height, &bpp, channels);
 
-	if(imgPtr != NULL) printf("Image loaded: %dx%d,  %d channels\n", width, height, bpp);
+	if (imgPtr != NULL) printf("Image %s loaded: %dx%d,  %d channels\n", name, width, height, bpp);
 	else printf("Error loading image!");
 }
 

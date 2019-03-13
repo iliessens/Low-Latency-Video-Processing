@@ -76,7 +76,7 @@ void VideoProcessor::inputWatchdog() {
 			// no frame happened
 			printf("No input signal\n");
 
-			ImageSource placeholder("nosignal.tga", 4);
+			ImageSource placeholder(NO_SIGNAL_IMG, 4);
 
 			IDeckLinkMutableVideoFrame* framePtr;
 			output->getEmptyFrame(&framePtr);
