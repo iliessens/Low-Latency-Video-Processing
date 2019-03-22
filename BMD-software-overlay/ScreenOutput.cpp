@@ -1,10 +1,17 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <future>
+
 #include "DeckLinkAPI_h.h"
+
 #include "ScreenOutput.h"
 #include "settings.h"
 #include "Chronometer.h"
-#include <stdint.h>
 
+SDL_Renderer * renderer;
+
+// masks for bit array
+uint32_t rmask, gmask, bmask, amask;
 
 ScreenOutput::ScreenOutput() {
 	//Initialize SDL
@@ -36,11 +43,11 @@ ScreenOutput::~ScreenOutput() {
 	SDL_Quit();
 }
 
-int ScreenOutput::showFrame(IDeckLinkVideoFrame * frame) {
+int drawAction(IDeckLinkVideoFrame * frame) {
 	uint8_t* data;
-	frame->GetBytes((void**) &data);
+	frame->GetBytes((void**)&data);
 
-	SDL_Surface* surf = SDL_CreateRGBSurfaceFrom((void*)data, WIDTH, HEIGHT, IMAGE_CHANNELS * 8 , IMAGE_CHANNELS * WIDTH,
+	SDL_Surface* surf = SDL_CreateRGBSurfaceFrom((void*)data, WIDTH, HEIGHT, IMAGE_CHANNELS * 8, IMAGE_CHANNELS * WIDTH,
 		rmask, gmask, bmask, amask);
 
 	SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surf);
@@ -55,6 +62,13 @@ int ScreenOutput::showFrame(IDeckLinkVideoFrame * frame) {
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surf);
 	frame->Release();
+
+	return 0;
+}
+
+int ScreenOutput::showFrame(IDeckLinkVideoFrame * frame) {
+	// do in separate thread
+	std::async(std::launch::async,drawAction, frame);
 
 	return 0;
 }

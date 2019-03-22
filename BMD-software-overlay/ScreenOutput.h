@@ -9,11 +9,6 @@ private:
 
 	//The surface contained by the window
 	SDL_Surface* screenSurface;
-
-	SDL_Renderer * renderer;
-
-	// masks for bit array
-	uint32_t rmask, gmask, bmask, amask;
 public:
 	ScreenOutput();
 	~ScreenOutput();
