@@ -7,7 +7,7 @@
 
 #include "settings.h"
 #include "DeckLinkInput.h"
-#include "DeckLinkOutputDevice.h"
+#include "ScreenOutput.h"
 
 IDeckLinkIterator* initCom() {
 	IDeckLinkIterator* deckLinkIterator;
@@ -91,9 +91,8 @@ int	_tmain (int argc, _TCHAR* argv[])
 
 	VideoProcessor* processor = new VideoProcessor();
 
-	DeckLinkOutputDevice* output = new DeckLinkOutputDevice(deckLink);
+	ScreenOutput* output = new ScreenOutput();
 	processor->setOutput(output);
-	output->StartOutput();
 
 	DeckLinkInputDevice* input = new DeckLinkInputDevice(deckLink,processor);
 	result = input->StartCapture();
@@ -103,8 +102,6 @@ int	_tmain (int argc, _TCHAR* argv[])
 
 	input->StopCapture();
 	input->Release();
-
-	output->Release();
 	
 	// Uninitalize COM on this thread
 	CoUninitialize();

@@ -86,6 +86,8 @@
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Student\Documents\vs_libs\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Student\Documents\vs_libs\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -161,7 +163,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comsuppw.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comsuppw.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -171,11 +173,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Chronometer.cpp" />
-    <ClCompile Include="DeckLinkOutputDevice.cpp" />
     <ClCompile Include="ImageSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DeckLinkAPI_i.c" />
     <ClCompile Include="DeckLinkInput.cpp" />
+    <ClCompile Include="ScreenOutput.cpp" />
     <ClCompile Include="VideoProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,8 +186,8 @@
   <ItemGroup>
     <ClInclude Include="Chronometer.h" />
     <ClInclude Include="DeckLinkInput.h" />
-    <ClInclude Include="DeckLinkOutputDevice.h" />
     <ClInclude Include="ImageSource.h" />
+    <ClInclude Include="ScreenOutput.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="VideoProcessor.h" />

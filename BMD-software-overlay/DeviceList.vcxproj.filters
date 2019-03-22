@@ -22,9 +22,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeckLinkOutputDevice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VideoProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -32,6 +29,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,9 +47,6 @@
     <ClInclude Include="DeckLinkInput.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeckLinkOutputDevice.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="VideoProcessor.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
       <Filter>stb</Filter>
     </ClInclude>
     <ClInclude Include="ImageSource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenOutput.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
