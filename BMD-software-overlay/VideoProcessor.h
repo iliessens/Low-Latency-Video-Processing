@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DeckLinkOutputDevice.h"
 #include "DeckLinkAPI_h.h"
 
 #include <stdint.h>
@@ -8,11 +9,10 @@
 
 #include "settings.h"
 #include "ImageSource.h"
-#include "ScreenOutput.h"
 
 class VideoProcessor {
 private:
-	ScreenOutput* output;
+	DeckLinkOutputDevice* output;
 	ImageSource* imageSource;
 	uint8_t* overlayPtr;
 	uint8_t* alphaPtr;
@@ -29,5 +29,6 @@ public:
 	~VideoProcessor();
 
 	void publishFrame(IDeckLinkVideoFrame* frame);
-	void setOutput(ScreenOutput * output);
+
+	void setOutput(DeckLinkOutputDevice* output);
 };

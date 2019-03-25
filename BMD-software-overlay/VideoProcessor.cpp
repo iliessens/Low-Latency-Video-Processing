@@ -77,17 +77,17 @@ void VideoProcessor::inputWatchdog() {
 			// no frame happened
 			printf("No input signal\n");
 
-			//ImageSource placeholder(NO_SIGNAL_IMG, 4);
+			ImageSource placeholder(NO_SIGNAL_IMG, 4);
 
-			//IDeckLinkMutableVideoFrame* framePtr;
-			//output->getEmptyFrame(&framePtr);
-			//uint8_t* outBytes;
-			//framePtr->GetBytes((void**) &outBytes);
-			//memcpy(outBytes, placeholder.getImage(), WIDTH*HEIGHT*IMAGE_CHANNELS);
+			IDeckLinkMutableVideoFrame* framePtr;
+			output->getEmptyFrame(&framePtr);
+			uint8_t* outBytes;
+			framePtr->GetBytes((void**) &outBytes);
+			memcpy(outBytes, placeholder.getImage(), WIDTH*HEIGHT*IMAGE_CHANNELS);
 
-			//output->showFrame(framePtr);
+			output->showFrame(framePtr);
 
-			//framePtr->Release();
+			framePtr->Release();
 		}
 		lastFrame = frameCounter; // save previous counter
 		std::this_thread::sleep_for(1s); // chrono literals
@@ -157,7 +157,7 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame)
 	if (fail) printf("Error outputting frame\n");
 }
 
-void VideoProcessor::setOutput(ScreenOutput * output)
+void VideoProcessor::setOutput(DeckLinkOutputDevice * output)
 {
 	this->output = output;
 }
