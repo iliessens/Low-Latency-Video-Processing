@@ -26,7 +26,7 @@ ScreenOutput::ScreenOutput() {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, 0);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 
 	rmask = 0x00ff0000;
