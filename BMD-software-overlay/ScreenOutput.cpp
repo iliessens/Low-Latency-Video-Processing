@@ -20,7 +20,7 @@ ScreenOutput::ScreenOutput() {
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
 
-	window = SDL_CreateWindow("Video output", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH/4, HEIGHT/4, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Video output", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == NULL)
 	{
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -47,20 +47,25 @@ int drawAction(IDeckLinkVideoFrame * frame) {
 	uint8_t* data;
 	frame->GetBytes((void**)&data);
 
-	SDL_Surface* surf = SDL_CreateRGBSurfaceFrom((void*)data, WIDTH, HEIGHT, IMAGE_CHANNELS * 8, IMAGE_CHANNELS * WIDTH,
-		rmask, gmask, bmask, amask);
+	SDL_Texture* buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, 
+		SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
+	
+	int* videoData;
+	int pitch;
+	SDL_LockTexture(buffer, NULL, (void**) &videoData, &pitch);
 
-	SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surf);
+	memcpy(videoData, data, WIDTH*HEIGHT*IMAGE_CHANNELS);
 
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_UnlockTexture(buffer);
+
+	SDL_RenderCopy(renderer, buffer, NULL, NULL);
 	SDL_RenderPresent(renderer);
 
 #if EN_CHRONO
 	Chronometer::stopAndPrint();
 #endif
 
-	SDL_DestroyTexture(texture);
-	SDL_FreeSurface(surf);
+	SDL_DestroyTexture(buffer);
 	frame->Release();
 
 	return 0;
