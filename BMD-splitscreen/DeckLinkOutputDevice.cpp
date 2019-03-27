@@ -108,6 +108,6 @@ int DeckLinkOutputDevice::showFrame(IDeckLinkVideoFrame* frame) {
 }
 
 void DeckLinkOutputDevice::getEmptyFrame(IDeckLinkMutableVideoFrame** frame) {
-	const int rowBytes = WIDTH * IMAGE_CHANNELS;
+	const int rowBytes = WIDTH * 4;
 	m_deckLinkOutput->CreateVideoFrame(WIDTH, HEIGHT, rowBytes, PIXEL_MODE, bmdFrameFlagDefault, frame);
 }

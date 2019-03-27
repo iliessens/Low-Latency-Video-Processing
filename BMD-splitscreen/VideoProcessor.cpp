@@ -47,16 +47,18 @@ void VideoProcessor::trigger()
 	composite->GetBytes((void**)&outbytes);
 
 	for (int i = 0; i < composite->GetHeight(); ++i) {
+		uint32_t* lRowPtr = inLeft + WIDTH * (i / 2);
+		uint32_t* dstRowPtr = (outbytes + WIDTH * (i/2));
 
 		// do left part
-		uint16_t* lstartPtr = (inLeft + WIDTH * i) + WIDTH / 4;
-		uint16_t* dstPtr = (outbytes + WIDTH * i);
+		uint32_t* lstartPtr = lRowPtr + (WIDTH / 8);
+		uint32_t* dstPtr = dstRowPtr;
 
-		memcpy(dstPtr, lstartPtr, WIDTH / 2);
+		memcpy(dstPtr, lstartPtr, WIDTH / 4);
 
 		// do right part
-		uint16_t* rstartPtr = (inRight + WIDTH * i) + WIDTH / 4;
-		dstPtr = (outbytes + WIDTH * i + WIDTH / 2);
+		uint32_t* rstartPtr = (inRight + WIDTH * i/2) + WIDTH / 8;
+		dstPtr = (outbytes + WIDTH * i/2 + WIDTH / 4);
 		memcpy(dstPtr, rstartPtr, WIDTH / 2);
 		
 	}

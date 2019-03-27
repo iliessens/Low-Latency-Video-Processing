@@ -15,4 +15,4 @@
 //enable chronometer
 #define EN_CHRONO 0
 
-#define IMAGE_CHANNELS 4
+#define IMAGE_CHANNELS 3
