@@ -38,28 +38,28 @@ void VideoProcessor::trigger()
 	IDeckLinkMutableVideoFrame* composite;
 	output->getEmptyFrame(&composite);
 
-	uint32_t* outbytes;
-	uint32_t* inLeft;
-	uint32_t* inRight;
+	uint16_t* outbytes;
+	uint16_t* inLeft;
+	uint16_t* inRight;
 
 	frame1->GetBytes((void**) &inLeft);
 	frame2->GetBytes((void**) &inRight);
 	composite->GetBytes((void**)&outbytes);
 
 	for (int i = 0; i < composite->GetHeight(); ++i) {
-		uint32_t* lRowPtr = inLeft + WIDTH * (i / 2);
-		uint32_t* dstRowPtr = (outbytes + WIDTH * (i/2));
+		uint16_t* lRowPtr = inLeft + WIDTH * i;
+		uint16_t* dstRowPtr = outbytes + WIDTH * i;
 
 		// do left part
-		uint32_t* lstartPtr = lRowPtr + (WIDTH / 8);
-		uint32_t* dstPtr = dstRowPtr;
+		uint16_t* lstartPtr = lRowPtr + (WIDTH / 4);
+		uint16_t* dstPtr = dstRowPtr;
 
-		memcpy(dstPtr, lstartPtr, WIDTH / 4);
+		memcpy(dstPtr, lstartPtr, WIDTH);
 
 		// do right part
-		uint32_t* rstartPtr = (inRight + WIDTH * i/2) + WIDTH / 8;
-		dstPtr = (outbytes + WIDTH * i/2 + WIDTH / 4);
-		memcpy(dstPtr, rstartPtr, WIDTH / 2);
+		uint16_t* rstartPtr = (inRight + WIDTH * i) + WIDTH / 4;
+		dstPtr = dstRowPtr + WIDTH / 2;
+		memcpy(dstPtr, rstartPtr, WIDTH);
 		
 	}
 

@@ -14,6 +14,10 @@ Framesync::~Framesync()
 void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
 	processor->publishFrame(frame, stream);
+	//TEMP test code
+	if(stream == 1) processor->trigger();
+	return;
+	//End TEMP
 	if (stream == triggerStream) processor->trigger();
 	if (stream == 1) {
 

@@ -108,6 +108,8 @@ int DeckLinkOutputDevice::showFrame(IDeckLinkVideoFrame* frame) {
 }
 
 void DeckLinkOutputDevice::getEmptyFrame(IDeckLinkMutableVideoFrame** frame) {
-	const int rowBytes = WIDTH * 4;
-	m_deckLinkOutput->CreateVideoFrame(WIDTH, HEIGHT, rowBytes, PIXEL_MODE, bmdFrameFlagDefault, frame);
+	const int rowBytes = WIDTH * 2;
+	HRESULT result= m_deckLinkOutput->CreateVideoFrame(WIDTH, HEIGHT, rowBytes, PIXEL_MODE, bmdFrameFlagDefault, frame);
+
+	if (result != S_OK) printf("Error allocating output frame\n");
 }
