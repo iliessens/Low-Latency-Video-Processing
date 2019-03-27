@@ -1,3 +1,5 @@
+#include <thread>
+
 #include "Framesync.h"
 #include "settings.h"
 
@@ -13,17 +15,18 @@ Framesync::~Framesync()
 
 void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
-	processor->publishFrame(frame, stream);
-	if (stream == 1) stream1Ok = true;
-	else if (stream == 2) stream2Ok = true;
 
-	//TEMP test code
+	std::thread pt(&VideoProcessor::publishFrame, processor,frame, stream);
+	pt.detach();
+
 	if (stream == triggerStream) {
-		if (stream1Ok && stream2Ok) {
-			processor->trigger();
-		}
-		else printf("Trigger aborted\n");
+		// run in separate thread
+		std::thread th(&VideoProcessor::trigger, processor);
+		th.detach();
+		//processor->trigger();
 	}
+
+	int prevStream = triggerStream;
 
 	if (stream == 1) {
 
@@ -40,6 +43,8 @@ void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 			triggerStream = 2;
 		}
 	}
+
+	if (prevStream != triggerStream) printf("Triggerstream changed to %d\n", triggerStream);
 }
 
 void Framesync::setOutput(DeckLinkOutputDevice* output) {

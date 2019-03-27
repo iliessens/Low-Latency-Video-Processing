@@ -19,7 +19,7 @@ bool VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
 	if (stream == 1) {
-		//output->showFrame(frame);
+		if(frame1) frame1->Release();
 		frame1 = frame;
 	}
 	else {
@@ -27,7 +27,7 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 		output->getEmptyFrame(&rgbframe);
 		
 		converter->ConvertFrame(frame, rgbframe);*/
-
+		if(frame2) frame2->Release();
 		frame2 = frame;
 	}
 }
@@ -65,6 +65,5 @@ void VideoProcessor::trigger()
 	}
 
 	output->showFrame(composite);
-	frame1->Release();
-	frame2->Release();
+	//Input frames are only released when new ones arrive
 }
