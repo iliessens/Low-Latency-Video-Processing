@@ -13,7 +13,10 @@ Framesync::~Framesync()
 
 void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
+	processor->publishFrame(frame, stream);
+	if (stream == triggerStream) processor->trigger();
 	if (stream == 1) {
+
 		t1 = high_resolution_clock::now();
 	}
 	else {
@@ -26,13 +29,6 @@ void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 		else {
 			triggerStream = 2;
 		}
-	}
-
-	if (stream == triggerStream) {
-		processor->publishFrame(frame, stream);
-	}
-	else {
-		frame->Release();
 	}
 }
 

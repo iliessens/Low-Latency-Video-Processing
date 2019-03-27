@@ -13,9 +13,14 @@ private:
 	bool processFrame(IDeckLinkVideoFrame * frame);
 	IDeckLinkVideoConversion* converter;
 
+	IDeckLinkVideoFrame* frame1 = NULL;
+	IDeckLinkVideoFrame* frame2 = NULL;
+
+
 public:
 	VideoProcessor();
 	~VideoProcessor();
 
 	void publishFrame(IDeckLinkVideoFrame* frame, char stream);
+	void trigger();
 };

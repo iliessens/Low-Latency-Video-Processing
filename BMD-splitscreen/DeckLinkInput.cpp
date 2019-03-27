@@ -103,6 +103,11 @@ HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputForma
 	_bstr_t		modeName(nameBSTR, false);
 
 	printf("Mode: %s\n", (char*) modeName);
+
+	if (newMode->GetDisplayMode() != DISPLAY_MODE) {
+		printf("Wrong display resolution selected!\n");
+		return 0;
+	}
 	
 	printf("Pixel format: ");
 	if (detectedSignalFlags & bmdDetectedVideoInputRGB444) printf("10-bit RGB\n");
@@ -110,10 +115,10 @@ HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputForma
 		printf("10-bit YUV\n");
 
 		// restart with YUV format
-		BMDVideoInputFlags inputFlags = bmdVideoInputFlagDefault;
+		/*BMDVideoInputFlags inputFlags = bmdVideoInputFlagDefault;
 		inputFlags |= bmdVideoInputEnableFormatDetection;
 		m_deckLinkInput->EnableVideoInput(DISPLAY_MODE, BMDPixelFormat::bmdFormat8BitYUV, inputFlags);
-		m_deckLinkInput->StartStreams();
+		m_deckLinkInput->StartStreams();*/
 	}
 	
 	return 0;

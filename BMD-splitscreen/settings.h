@@ -5,7 +5,7 @@
 #define BMD_DEVICE_2 1
 
 #define DISPLAY_MODE BMDDisplayMode::bmdModeHD1080p50
-#define PIXEL_MODE BMDPixelFormat::bmdFormat8BitBGRA
+#define PIXEL_MODE BMDPixelFormat::bmdFormat8BitYUV
 
 #define WIDTH 1920
 #define HEIGHT 1080
