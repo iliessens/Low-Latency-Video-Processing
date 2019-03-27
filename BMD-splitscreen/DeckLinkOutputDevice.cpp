@@ -98,6 +98,7 @@ HRESULT	DeckLinkOutputDevice::ScheduledPlaybackHasStopped()
 }
 
 int DeckLinkOutputDevice::showFrame(IDeckLinkVideoFrame* frame) {
+	frame->AddRef();
 	HRESULT result = m_deckLinkOutput->DisplayVideoFrameSync(frame);
 	frame->Release();
 

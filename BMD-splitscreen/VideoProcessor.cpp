@@ -6,6 +6,13 @@ VideoProcessor::VideoProcessor() {
 	converter->AddRef();
 }
 
+void VideoProcessor::setOutput(DeckLinkOutputDevice* output) {
+	AbstractVideoProcessor::setOutput(output);
+	output->getEmptyFrame(&composite);
+
+	if (!composite) printf("Error allocating output frame!\n");
+}
+
 VideoProcessor::~VideoProcessor()
 {
 	converter->Release();
@@ -34,11 +41,6 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 
 void VideoProcessor::trigger()
 {
-	IDeckLinkMutableVideoFrame* composite;
-	output->getEmptyFrame(&composite);
-	if (!composite) return;
-	//Prevent working with invalid frames
-
 	uint16_t* outbytes;
 	uint16_t* inLeft;
 	uint16_t* inRight;

@@ -16,9 +16,12 @@ private:
 	IDeckLinkVideoFrame* frame1 = NULL;
 	IDeckLinkVideoFrame* frame2 = NULL;
 
+	IDeckLinkMutableVideoFrame* composite;
+
 
 public:
 	VideoProcessor();
+	void setOutput(DeckLinkOutputDevice * output);
 	~VideoProcessor();
 
 	void publishFrame(IDeckLinkVideoFrame* frame, char stream);
