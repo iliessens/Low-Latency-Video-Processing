@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <chrono>
+#include <atomic>
 
 #include "settings.h"
 #include "AbstractVideoProcessor.h"
@@ -19,6 +20,9 @@ private:
 
 	high_resolution_clock::time_point t1;
 	int triggerStream;
+
+	std::atomic<bool> stream1Ok = false;
+	std::atomic<bool> stream2Ok = false;
 
 public:
 	Framesync();

@@ -14,11 +14,17 @@ Framesync::~Framesync()
 void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
 	processor->publishFrame(frame, stream);
+	if (stream == 1) stream1Ok = true;
+	else if (stream == 2) stream2Ok = true;
+
 	//TEMP test code
-	if(stream == 1) processor->trigger();
-	return;
-	//End TEMP
-	if (stream == triggerStream) processor->trigger();
+	if (stream == triggerStream) {
+		if (stream1Ok && stream2Ok) {
+			processor->trigger();
+		}
+		else printf("Trigger aborted\n");
+	}
+
 	if (stream == 1) {
 
 		t1 = high_resolution_clock::now();

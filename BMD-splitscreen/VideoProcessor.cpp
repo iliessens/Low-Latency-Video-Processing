@@ -34,9 +34,10 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 
 void VideoProcessor::trigger()
 {
-	if ((!frame1) || (!frame2)) return;
 	IDeckLinkMutableVideoFrame* composite;
 	output->getEmptyFrame(&composite);
+	if (!composite) return;
+	//Prevent working with invalid frames
 
 	uint16_t* outbytes;
 	uint16_t* inLeft;
