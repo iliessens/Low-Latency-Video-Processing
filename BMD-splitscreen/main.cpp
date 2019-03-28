@@ -99,7 +99,9 @@ int	_tmain (int argc, _TCHAR* argv[])
 
 	AbstractVideoProcessor* processor = new Framesync();
 
-	DeckLinkOutputDevice* output = new DeckLinkOutputDevice(deckLink1);
+	DeckLinkOutputDevice* output;
+	if(OUTPUT_DEVICE == 1) output = new DeckLinkOutputDevice(deckLink1);
+	else output = new DeckLinkOutputDevice(deckLink2);
 	processor->setOutput(output);
 	output->StartOutput();
 

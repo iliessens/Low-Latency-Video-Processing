@@ -1,8 +1,10 @@
 #pragma once
 
-//Output gaat langs 1
+//Output gaat steeds langs 1
 #define BMD_DEVICE_1 9
 #define BMD_DEVICE_2 1
+
+#define OUTPUT_DEVICE 1 // kies of bovenstaand device 1 of device 2 gebruikt wordt
 
 #define DISPLAY_MODE BMDDisplayMode::bmdModeHD1080p50
 #define PIXEL_MODE BMDPixelFormat::bmdFormat8BitYUV

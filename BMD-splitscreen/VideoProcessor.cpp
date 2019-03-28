@@ -29,7 +29,6 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 	composite->GetBytes((void**)&outbytes);
 
 	if (stream == 1) {
-		if(frame1) frame1->Release();
 		frame1 = frame;
 
 		uint16_t* inLeft;
@@ -47,7 +46,6 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 		}
 	}
 	else {
-		if(frame2) frame2->Release();
 		frame2 = frame;
 
 		uint16_t* inRight;
@@ -63,6 +61,8 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 
 		}
 	}
+
+	frame->Release();
 }
 
 void VideoProcessor::trigger()
