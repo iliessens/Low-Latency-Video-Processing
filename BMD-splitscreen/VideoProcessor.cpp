@@ -35,12 +35,9 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 		frame1->GetBytes((void**)&inLeft);
 
 		for (int i = 0; i < composite->GetHeight(); ++i) {
-			uint16_t* lRowPtr = inLeft + WIDTH * i;
-			uint16_t* dstRowPtr = outbytes + WIDTH * i;
-
 			// do left part
-			uint16_t* lstartPtr = lRowPtr + (WIDTH / 4);
-			uint16_t* dstPtr = dstRowPtr;
+			uint16_t* lstartPtr = inLeft + WIDTH * i + (WIDTH / 4);
+			uint16_t* dstPtr = outbytes + WIDTH * i;
 
 			memcpy(dstPtr, lstartPtr, WIDTH);
 		}
@@ -62,11 +59,12 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 		}
 	}
 
+	trigger();
+
 	frame->Release();
 }
 
 void VideoProcessor::trigger()
 {
 	output->showFrame(composite);
-	//Input frames are only released when new ones arrive
 }
