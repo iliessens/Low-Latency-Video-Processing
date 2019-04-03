@@ -41,24 +41,28 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
 	uint8_t* outbytes;
 	composite->GetBytes((void**)&outbytes);
+	long rowbytes = composite->GetRowBytes();
 
-	//if (stream == 1) {
-	if (false) {
+	if (stream == 1) {
 		frame1 = frame;
 
 		uint8_t* inLeft;
 		frame1->GetBytes((void**)&inLeft);
 
-		for (int i = 0; i < composite->GetRowBytes(); i = i + 2) { // row loop, copy 1/2 of rows
-			int v = i / 2;
 
-			// do left part
-			uint8_t* lstartPtr = inLeft + WIDTH * v + (WIDTH / 4);
-			uint8_t* dstPtr = outbytes + WIDTH * v;
+		for (int i = 0; i < composite->GetHeight() / 2; i++) { // row loop
 
-			for (int j = 0; j < composite->GetWidth() / 2; j = j + 2) {
-				dstPtr[j] = lstartPtr[j];
+			// do right part
+			uint8_t* lstartPtr = inLeft + rowbytes * i * 2;
+			uint8_t* dstPtr = outbytes + rowbytes * i + rowbytes * composite->GetHeight() / 4;
+
+			for (int j = 0; j < composite->GetWidth(); j = j + 4) {
+				dstPtr[j] = lstartPtr[j * 2];
+				dstPtr[j + 1] = lstartPtr[j * 2 + 1];
+				dstPtr[j + 2] = lstartPtr[j * 2 + 2];
+				dstPtr[j + 3] = lstartPtr[j * 2 + 3];
 			}
+
 		}
 	}
 	else {
@@ -66,7 +70,6 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 
 		uint8_t* inRight;
 		frame2->GetBytes((void**)&inRight);
-		long rowbytes = composite->GetRowBytes();
 
 		for (int i = 0; i < composite->GetHeight()/2; i++) { // row loop
 
