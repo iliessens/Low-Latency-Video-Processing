@@ -1,6 +1,8 @@
 #include "VideoProcessor.h"
 #include <assert.h>
 
+#include "Chronometer.h"
+
 VideoProcessor::VideoProcessor() {
 	CoCreateInstance(CLSID_CDeckLinkVideoConversion, NULL, CLSCTX_ALL, IID_IDeckLinkVideoConversion, (void**)&converter);
 	converter->AddRef();
@@ -67,4 +69,5 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 void VideoProcessor::trigger()
 {
 	output->showFrame(composite);
+	Chronometer::stopAndPrint();
 }
