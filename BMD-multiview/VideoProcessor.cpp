@@ -12,6 +12,7 @@ void VideoProcessor::setOutput(DeckLinkOutputDevice* output) {
 	AbstractVideoProcessor::setOutput(output);
 	output->getEmptyFrame(&composite);
 
+	//TODO could read image here to fill black space
 	// make frame black
 	uint8_t* data;
 	composite->GetBytes((void**) &data);

@@ -174,6 +174,7 @@
     <ClCompile Include="Chronometer.cpp" />
     <ClCompile Include="DeckLinkOutputDevice.cpp" />
     <ClCompile Include="Framesync.cpp" />
+    <ClCompile Include="ImageSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DeckLinkAPI_i.c" />
     <ClCompile Include="DeckLinkInput.cpp" />
@@ -188,7 +189,9 @@
     <ClInclude Include="DeckLinkInput.h" />
     <ClInclude Include="DeckLinkOutputDevice.h" />
     <ClInclude Include="Framesync.h" />
+    <ClInclude Include="ImageSource.h" />
     <ClInclude Include="settings.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="VideoProcessor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

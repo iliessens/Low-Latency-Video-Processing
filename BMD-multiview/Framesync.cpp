@@ -15,8 +15,9 @@ Framesync::~Framesync()
 
 void Framesync::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
-	std::thread pt(&VideoProcessor::publishFrame, processor,frame, stream);
-	pt.detach();
+	//std::thread pt(&VideoProcessor::publishFrame, processor,frame, stream);
+	//pt.detach();
+	processor->publishFrame(frame, stream);
 }
 
 void Framesync::setOutput(DeckLinkOutputDevice* output) {

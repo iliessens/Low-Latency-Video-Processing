@@ -75,7 +75,7 @@ void findDeckLink(IDeckLinkIterator* deckLinkIterator, IDeckLink** decklink1, ID
 
 int	_tmain (int argc, _TCHAR* argv[])
 {
-	SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS); // high priority to prevent slowdown on high cpu load
+	//SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS); // high priority to prevent slowdown on high cpu load
 	
 	HRESULT						result;
 	
