@@ -10,6 +10,7 @@
 DeckLinkInputDevice::DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor)
 	: m_deckLink(device), m_deckLinkInput(NULL), processor(videoprocessor)
 {
+	memoryAllocator = new SimpleMemoryAllocator();
 	m_deckLink->AddRef();
 	this->init();
 }
@@ -24,6 +25,13 @@ HRESULT DeckLinkInputDevice::init()
 	if (result != S_OK)
 	{
 		fprintf(stderr, "Unable to get IDeckLinkInput interface\n");
+		goto bail;
+	}
+
+	result = m_deckLinkInput->SetVideoInputFrameMemoryAllocator(memoryAllocator);
+	if (result != S_OK)
+	{
+		fprintf(stderr, "Error setting the custom memory allocator\n");
 		goto bail;
 	}
 

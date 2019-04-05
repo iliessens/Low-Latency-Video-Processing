@@ -34,6 +34,9 @@
     <ClCompile Include="ImageSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMemoryAllocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="..\..\include\DeckLinkAPI.idl">
@@ -60,6 +63,9 @@
       <Filter>stb</Filter>
     </ClInclude>
     <ClInclude Include="ImageSource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMemoryAllocator.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

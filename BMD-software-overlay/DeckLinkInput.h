@@ -3,6 +3,7 @@
 #include "DeckLinkAPI_h.h"
 #include "VideoProcessor.h"
 #include <atomic>
+#include "SimpleMemoryAllocator.h"
 
 class DeckLinkInputDevice : public IDeckLinkInputCallback
 {
@@ -13,6 +14,8 @@ private:
 	VideoProcessor*						processor;
 	
 	HRESULT init();
+
+	SimpleMemoryAllocator* memoryAllocator;
 public:
 	DeckLinkInputDevice(IDeckLink* device, VideoProcessor* videoprocessor);
 
