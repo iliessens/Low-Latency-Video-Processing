@@ -28,42 +28,32 @@ bool VideoProcessor::processFrame(IDeckLinkVideoFrame * frame) {
 void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 {
 	uint16_t* outbytes;
+	uint16_t* inBytes;
+
 	composite->GetBytes((void**)&outbytes);
+	frame->GetBytes((void**) &inBytes);
 
 	if (stream == 1) {
-		frame1 = frame;
-
-		uint16_t* inLeft;
-		frame1->GetBytes((void**)&inLeft);
-
-		for (int i = 0; i < composite->GetHeight(); ++i) {
-			// do left part
-			uint16_t* lstartPtr = inLeft + WIDTH * i + (WIDTH / 4);
-			uint16_t* dstPtr = outbytes + WIDTH * i;
-
-			memcpy(dstPtr, lstartPtr, WIDTH);
-		}
+		copyData(inBytes + (WIDTH / 4), outbytes);
 	}
 	else {
-		frame2 = frame;
-
-		uint16_t* inRight;
-		frame2->GetBytes((void**)&inRight);
-
-		for (int i = 0; i < composite->GetHeight(); ++i) {
-			uint16_t* dstRowPtr = outbytes + WIDTH * i;
-
-			// do right part
-			uint16_t* rstartPtr = (inRight + WIDTH * i) + WIDTH / 4;
-			uint16_t* dstPtr = dstRowPtr + WIDTH / 2;
-			memcpy(dstPtr, rstartPtr, WIDTH);
-
-		}
+		copyData(inBytes + (WIDTH / 4), outbytes + (WIDTH / 2));
 	}
 
 	trigger();
 
 	frame->Release();
+}
+
+void VideoProcessor::copyData(uint16_t * input, uint16_t * output)
+{
+	for (int i = 0; i < composite->GetHeight(); ++i) {
+		uint16_t* dstPtr = output + WIDTH * i;
+
+		uint16_t* rstartPtr = (input + WIDTH * i);
+		memcpy(dstPtr, rstartPtr, WIDTH);
+
+	}
 }
 
 void VideoProcessor::trigger()

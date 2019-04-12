@@ -18,6 +18,8 @@ private:
 
 	IDeckLinkMutableVideoFrame* composite;
 
+	void copyData(uint16_t* input, uint16_t* output);
+
 
 public:
 	VideoProcessor();
