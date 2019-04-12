@@ -4,6 +4,7 @@
 #include "DeckLinkAPI_h.h"
 
 #include <stdint.h>
+#include <mutex>
 
 #include "AbstractVideoProcessor.h"
 #include "settings.h"
@@ -13,10 +14,8 @@ private:
 	bool processFrame(IDeckLinkVideoFrame * frame);
 	IDeckLinkVideoConversion* converter;
 
-	IDeckLinkVideoFrame* frame1 = NULL;
-	IDeckLinkVideoFrame* frame2 = NULL;
-
 	IDeckLinkMutableVideoFrame* composite;
+	std::mutex processing_mutex;
 
 	void copyData(uint16_t* input, uint16_t* output);
 

@@ -33,6 +33,8 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 	composite->GetBytes((void**)&outbytes);
 	frame->GetBytes((void**) &inBytes);
 
+	std::unique_lock<std::mutex> guard(processing_mutex);
+
 	if (stream == 1) {
 		copyData(inBytes + (WIDTH / 4), outbytes);
 	}
@@ -41,6 +43,8 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 	}
 
 	trigger();
+
+	guard.unlock();
 
 	frame->Release();
 }
