@@ -126,7 +126,7 @@ HRESULT DeckLinkInputDevice::VideoInputFormatChanged(/* in */ BMDVideoInputForma
 
 HRESULT DeckLinkInputDevice::VideoInputFrameArrived(/* in */ IDeckLinkVideoInputFrame* videoFrame, /* in */ IDeckLinkAudioInputPacket* audioPacket)
 {
-	Chronometer::start();
+	if (stream == 2) Chronometer::start();
 	if (videoFrame)
 	{
 		bool inputFrameValid = ((videoFrame->GetFlags() & bmdFrameHasNoInputSource) == 0);
@@ -139,6 +139,10 @@ HRESULT DeckLinkInputDevice::VideoInputFrameArrived(/* in */ IDeckLinkVideoInput
 		}
 
 	}
+
+	unsigned int available;
+	m_deckLinkInput->GetAvailableVideoFrameCount(&available);
+	if (available > 0) m_deckLinkInput->FlushStreams();
 
 	return S_OK;
 }

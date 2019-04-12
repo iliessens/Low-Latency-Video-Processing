@@ -40,6 +40,7 @@ void VideoProcessor::publishFrame(IDeckLinkVideoFrame * frame, char stream)
 	}
 	else {
 		copyData(inBytes + (WIDTH / 4), outbytes + (WIDTH / 2));
+		Chronometer::stopAndPrint();
 	}
 
 	trigger();
@@ -63,5 +64,4 @@ void VideoProcessor::copyData(uint16_t * input, uint16_t * output)
 void VideoProcessor::trigger()
 {
 	output->showFrame(composite);
-	Chronometer::stopAndPrint();
 }
