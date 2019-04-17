@@ -4,7 +4,7 @@ REM clear screen
 echo off
 cls
 
-SET ffpath=C:\Users\Student\Documents\ff-shared
+SET ffpath=C:\Users\Student\Downloads\Tools\ffmpeg-20190225-f948082-win64-static\bin
 echo FFmpeg path is %ffpath%
 
 REM check path first
