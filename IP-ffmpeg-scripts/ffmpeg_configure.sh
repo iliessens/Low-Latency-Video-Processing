@@ -7,5 +7,5 @@ cd ../../ffmpeg
 
 PKG_CONFIG_PATH="nv-codec-headers/"
 ./configure --enable-nvenc --enable-nvdec --enable-opengl --enable-opencl --enable-sdl --disable-shared --enable-static \
---extra-cflags=-I"opencl/include/" --extra-ldflags=-L"opencl/lib/"
+ --enable-decklink --extra-cflags='-I"decklink-headers/" -I"opencl/include/"' --extra-ldflags='-L"decklink-headers/" -L"opencl/lib/"'
  make -j8
