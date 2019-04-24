@@ -1,4 +1,4 @@
-call setpath
+call ../setpath
 ffmpeg -hwaccel nvdec -threads 4 ^
 -max_delay 0 ^
 -init_hw_device opencl=gpu:0.0 -filter_hw_device gpu ^

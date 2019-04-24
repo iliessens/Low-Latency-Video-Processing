@@ -1,4 +1,4 @@
-call setpath
+call ../setpath
 ffmpeg ^
 -flags low_delay -fflags nobuffer ^
 -format_code Hp50 -raw_format argb -f decklink -i "Intensity Pro 4K" ^

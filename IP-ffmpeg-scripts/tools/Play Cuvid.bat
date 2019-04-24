@@ -1,4 +1,4 @@
-call setpath
+call ../setpath
 ffmpeg -hwaccel cuvid -threads 2 ^
 -c:v h264_cuvid ^
 -max_delay 0 ^

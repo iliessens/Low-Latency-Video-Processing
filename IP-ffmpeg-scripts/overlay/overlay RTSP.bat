@@ -1,4 +1,4 @@
-call setpath
+call ../setpath
 ffmpeg -hwaccel nvdec -threads 2 ^
 -max_delay 0 ^
 -i rtsp://192.168.100.150:8557/h264 -i 1080_Test_small.tga ^

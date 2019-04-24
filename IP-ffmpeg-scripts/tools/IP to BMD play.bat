@@ -1,5 +1,5 @@
 REM way too much latency
-call setpath
+call ../setpath
 ffmpeg -hwaccel nvdec -threads 2 ^
 -max_delay 0 ^
 -flags low_delay -fflags nobuffer ^
