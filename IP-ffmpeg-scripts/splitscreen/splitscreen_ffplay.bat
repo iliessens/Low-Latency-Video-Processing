@@ -1,5 +1,6 @@
 REM use a previous recording using the streamdump script to simulate a second camera
 REM Recorded video will freeze on last frame
+REM doesn't work with own compiled version. Quits without message
 SET PATH=%PATH%;"C:\Users\Student\Downloads\Tools\ffmpeg-20190225-f948082-win64-static\bin"
 ffmpeg -hwaccel nvdec -threads 4 ^
 -max_delay 0 -fflags nobuffer -flags low_delay ^
