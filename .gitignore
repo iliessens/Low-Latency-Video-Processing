@@ -3,3 +3,6 @@
 */Win32/Release/
 */x64/Release/
 */.vs/
+BMD-software-overlay/DeviceList.vcxproj.user
+BMD-software-overlay/DeckLinkAPI_i.c
+BMD-software-overlay-screen/DeviceList.sln
