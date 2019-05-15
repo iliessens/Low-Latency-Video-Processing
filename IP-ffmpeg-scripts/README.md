@@ -3,7 +3,7 @@
 .opencl {background-color: lightblue; padding: 2px}
 </style>
 
-#FFmpeg scripts
+# FFmpeg scripts
 Download and unzip ffmpeg from the official website and unzip them somewhere on your PC.  
 https://ffmpeg.zeranoe.com/builds/  
 
@@ -20,13 +20,13 @@ Libraries available in the default download are not listed.
 
 The batch scripts are written on windows, but the options used should also work on other platforms.  
 
-##Overview of the scripts
+## Overview of the scripts
 The top folder contains two scripts:
 * setpath: adds the ffmpeg folder to path temporarily. This allows to easily change the ffmpeg binary version or location used for all scripts.
 * ffmpeg_configure: this bash script (= Linux or MinGW shell!) contains the build commands for our custom version for FFmpeg. Note that this only sets the options, you still need to provide the external libraries yourself. The paths will probably need editing.  
 
 Following scripts are present in the subfolders.  
-###*ffplay*-scripts
+### *ffplay*-scripts
 These scripts use the ffplay tool to play an incoming video feed.  
 There are three scripts available:  
 * RTSP H.264
@@ -35,7 +35,7 @@ There are three scripts available:
 
 Note that each of them requires a different camera configuration to function optimally.  
 
-###Overlay
+### Overlay
 Scripts to add an overlay to a video feed. The overlay is always the Targa file present in the folder, but could be changed to anything else without much effort.  
 
 * BMD overlay takes in a feed from a capture card (Blackmagic Design), adds an overlay and outputs it again through a playback card. Device names might need to be edited. <span class="bmd">BMD support</span>
@@ -43,13 +43,13 @@ Scripts to add an overlay to a video feed. The overlay is always the Targa file 
 * Overlay RTSP: adds an overlay to the RTSP video feed. More information about the choices made to write this script can be found in the final paper.  
 * RTSP PiP: adds a prerecorded video on top of the live video feed to demonstrate a picture-in-picture. The path of the video and border color can be edited to match your preferences.  
 
-###Splitscreen
+### Splitscreen
 Scripts to create a splitscreen composition. Because we only have on camera at our disposal, the second video is provided by a recording of our camera.  
 * Splitscreen ffplay uses ffplay to play the video, which is a little more stable and user friendly, but a lot slower.  
 * Splitscreen img: a splitscreen of the live video and a static image.
 * Splitscreen rec: a splitscreen of the live video and a recorded video
 
-###Tools
+### Tools
 A collection of useful scripts that do not fit in one of the previous categories.
 
 * Dump stream: Record a stream to disk without changing the data. The videostream is demuxed and recorded to a file. Thus, the encoding is still the one done by the camera.

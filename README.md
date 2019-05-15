@@ -19,6 +19,6 @@ Development of the C++ applications was done using Visual Studio 2017. Project f
 |IP-gstreamer-scripts|Some scripts for Gstreamer as an extra. This does not work very well.|
 |Measurement|All files concerning the measurement solution, including code and a schematic. Consult the specific readme for more information.|
 
-##Blackmagic SDK
-The *BMD* applications make use of the Blackmagic Design Desktop Video SDK, which can be obtained from [their website](https://www.blackmagicdesign.com/developer/product/capture-and-playback). The include folder must be placed one level above this Readme file.
+## Blackmagic SDK
+The *BMD* applications make use of the Blackmagic Design Desktop Video SDK, which can be obtained from [their website](https://www.blackmagicdesign.com/developer/product/capture-and-playback). The include folder must be placed one level above this Readme file.  
 Additionally, a compatible product and its drivers must be installed.

@@ -2,7 +2,7 @@
 li {margin-bottom: 5px;}
 </style>
 
-#Measurement
+# Measurement  
 This folder contains the source code for the measurement solution.  
 The subfolders are as follows:
 * Arduino: contains the main Arduino program. The code is written for Arduino Uno, but should work on other models with minimal adjustments.
@@ -11,7 +11,7 @@ The comparator library from http://www.leonardomiliani.com/en/2012/analogcomp-un
 * DelayVerify: Toggles an output pin when the input causes the comparator to trigger. Using a function generator and an oscilloscope, this allows us measure the delay caused by the comparator and ``micros()`` function. As an extra the [DigitalWriteFast](https://github.com/NicksonYap/digitalWriteFast) library may be used.
 * Schema.sch: is an Eagle schematic for the full measurement solution as it was built.
 
-##Matlab
+## Matlab
 Contains the scripts to connect Matlab to the Arduino measurement solution from the Arduino folder.  
 ``MeasureLatency`` measures once, ``MultiMeasure`` performs multiple measurements and calculates mean and standard deviation. 
 
