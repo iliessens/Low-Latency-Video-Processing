@@ -7,7 +7,7 @@ function [results] = multiMeasure(n)
         else
             results(i) = result;
         end
-        pause(random('norm',1,0.5)); %random delay
+        pause(random('unif',0,0.4)); %random delay
     end
 
     results = results(results~=0); % remove dropped values
