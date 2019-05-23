@@ -6,17 +6,18 @@ ___
 This folder contains all code files written for the thesis. They are ordered in different folders. Some folders contain an additionnal *readme* file for additional information.  
 
 ## Overview
-Development of the C++ applications was done using Visual Studio 2017. Project files are provided.  
+Development of the C++ applications was done using Visual Studio 2017. Project files are provided. 
+Click on the provided links to view the detailed readme files.
 
 | Folder | Description |
 |--------|--------|
-|BMD-multiview|Similar to *BMD-splitscreen* but the video's are scaled so they can be shown in full. The empty space is filled with black, but could be changed to show a  background image.
+|[BMD-multiview](BMD-multiview/README.html)|Similar to *BMD-splitscreen* but the video's are scaled so they can be shown in full. The empty space is filled with black, but could be changed to show a  background image.
 |BMD-software-overlay| Own implementation of an overlay algorithm for use with capture cards of Blackmagic Design. I/O-devices and formats are configurable in <tt>settings.h</tt>|
 |BMD-software-overlay-screen| Same as above, but the output is sent to the screen using the SDL2-library.|
 |BMD-splitsceen|Split-screen implementation for Blackmagic Design Decklink devices|
 |CasparCG-config|Contains the configuration file used for our experiments using [CasparCG](https://www.casparcg.com/). It also contains two rundown files, which can be used as examples.|
-|IP-ffmpeg-scripts|A collection of different scripts for the FFmpeg tool, primarily for processing IP video from the camera.|
-|IP-gstreamer-scripts|Some scripts for Gstreamer as an extra. This does not work very well.|
+|[IP-ffmpeg-scripts](IP-ffmpeg-scripts/README.html)|A collection of different scripts for the FFmpeg tool, primarily for processing IP video from the camera.|
+|[IP-gstreamer-scripts](IP-gstreamer-scripts/README.html)|Some scripts for Gstreamer as an extra. This does not work very well.|
 |Measurement|All files concerning the measurement solution, including code and a schematic. Consult the specific readme for more information.|
 
 ## Blackmagic SDK
