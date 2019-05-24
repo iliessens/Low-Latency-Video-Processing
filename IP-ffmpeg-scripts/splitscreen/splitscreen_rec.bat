@@ -8,6 +8,7 @@ ffmpeg -threads 8 -hwaccel none -buffer_size 20M ^
 -fflags nobuffer -flags low_delay -max_delay 0 ^
 -i ../../../streamdump.ts ^
 -filter_complex "[0:v]crop=1/2*in_w:in_h [left];[1:v] crop=1/2*in_w:in_h [right]; [left][right] hstack,fps=50" ^
+-window_fullscreen 1 ^
 -pix_fmt bgra -f sdl "Video"
 timeout 10
 exit
